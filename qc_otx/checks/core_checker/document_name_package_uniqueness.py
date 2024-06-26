@@ -76,6 +76,8 @@ def check_rule(checker_data: models.CheckerData) -> None:
     document_package_dot_name = package_name + "." + document_name
     config_file_path = checker_data.config.get_config_param("OtxFile")
 
+    previous_wd = os.getcwd()
+
     os.chdir(os.path.dirname(config_file_path))
 
     package_splits = package_name.split(".")
@@ -124,3 +126,5 @@ def check_rule(checker_data: models.CheckerData) -> None:
             level=IssueSeverity.ERROR,
             rule_uid=rule_uid,
         )
+
+    os.chdir(previous_wd)
