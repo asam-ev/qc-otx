@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <otx xmlns="http://iso.org/OTX/1.0.0" id="1"
-    name="PositiveRootExample"
-    package="org.iso.otx.examples"
+    name="Core_Chk002_positive123"
+    package="positive.package1"
     version="1.0"
     timestamp="2010-03-18T14:40:10"
     xmlns:xsi="http://www.w3.org/2001/XMLSChema-instance"

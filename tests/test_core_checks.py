@@ -9,8 +9,8 @@ from qc_baselib import Result, IssueSeverity
 def test_valid_xml_document_positive(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/document_name_matches_filename/"
-    target_file_name = f"PositiveRootExample.otx"
+    base_path = "tests/data/Core_Chk001/"
+    target_file_name = f"Core_Chk001_positive.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
     test_utils.create_test_config(target_file_path)
@@ -35,8 +35,8 @@ def test_valid_xml_document_positive(
 def test_valid_xml_document_negative(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/document_name_matches_filename/"
-    target_file_name = f"NegativeRootExample.otx"
+    base_path = "tests/data/Core_Chk001/"
+    target_file_name = f"Core_Chk001_negative.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
     test_utils.create_test_config(target_file_path)

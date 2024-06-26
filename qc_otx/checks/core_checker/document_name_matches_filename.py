@@ -16,7 +16,13 @@ from pathlib import Path
 
 def check_rule(checker_data: models.CheckerData) -> None:
     """
-    Implements a rule to check if document name matched file name
+    Implements core checker rule Core_Chk001
+    Criterion:
+    For OTX documents stored in a file system, the attribute name of the <otx>
+    root element should match the filename of the containing file
+    (without the extension “.otx”).
+    Severity:
+    Warning
     """
     logging.info("Executing document_name_matches_filename check")
 

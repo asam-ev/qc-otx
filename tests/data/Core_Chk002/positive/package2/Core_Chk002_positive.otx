@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0" id="1"
+    name="Core_Chk002_positive456"
+    package="positive.package1"
+    version="1.0"
+    timestamp="2010-03-18T14:40:10"
+    xmlns:xsi="http://www.w3.org/2001/XMLSChema-instance"
+    xsi:schemaLocation="http://iso.org/OTX/1.0.0 Core/otx.xsd">
+
+    <specification> Example for showing the OTX document root structure </specification>
+</otx>

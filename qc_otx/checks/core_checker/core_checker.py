@@ -7,7 +7,11 @@ from qc_baselib import Configuration, Result, StatusType
 from qc_otx import constants
 from qc_otx.checks import utils, models
 
-from qc_otx.checks.core_checker import core_constants, document_name_matches_filename
+from qc_otx.checks.core_checker import (
+    core_constants,
+    document_name_matches_filename,
+    document_name_package_uniqueness,
+)
 
 
 def run_checks(checker_data: models.CheckerData) -> None:
@@ -20,7 +24,10 @@ def run_checks(checker_data: models.CheckerData) -> None:
         summary="",
     )
 
-    rule_list = [document_name_matches_filename.check_rule]
+    rule_list = [
+        document_name_matches_filename.check_rule,
+        document_name_package_uniqueness.check_rule,
+    ]
 
     for rule in rule_list:
         rule(checker_data=checker_data)
