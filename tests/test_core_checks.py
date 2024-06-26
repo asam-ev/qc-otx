@@ -50,6 +50,6 @@ def test_valid_xml_document_negative(
         "asam.net:otx:1.0.0:core.document_name_matches_filename"
     )
     assert len(core_issues) == 1
-    assert core_issues[0].level == IssueSeverity.ERROR
+    assert core_issues[0].level == IssueSeverity.WARNING
 
     test_utils.cleanup_files()
