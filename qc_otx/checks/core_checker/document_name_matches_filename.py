@@ -26,7 +26,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         emanating_entity="asam.net",
         standard="otx",
         definition_setting="1.0.0",
-        rule_full_name="core.document_name_matches_filename",  # Core_Chk001
+        rule_full_name="core.chk_001.document_name_matches_filename",
     )
 
     root = checker_data.input_file_xml_root
@@ -52,7 +52,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
             rule_uid=rule_uid,
         )
 
-        # root_xpath = get_xpath(root, root)
         checker_data.result.add_xml_location(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=core_constants.CHECKER_ID,

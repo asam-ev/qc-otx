@@ -23,7 +23,7 @@ def test_valid_xml_document_positive(
     assert (
         len(
             result.get_issues_by_rule_uid(
-                "asam.net:otx:1.0.0:core.document_name_matches_filename"
+                "asam.net:otx:1.0.0:core.chk_001.document_name_matches_filename"
             )
         )
         == 0
@@ -47,7 +47,7 @@ def test_valid_xml_document_negative(
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
     core_issues = result.get_issues_by_rule_uid(
-        "asam.net:otx:1.0.0:core.document_name_matches_filename"
+        "asam.net:otx:1.0.0:core.chk_001.document_name_matches_filename"
     )
     assert len(core_issues) == 1
     assert core_issues[0].level == IssueSeverity.WARNING
