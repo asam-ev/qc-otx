@@ -42,7 +42,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
     root = tree.getroot()
 
     import_nodes = root.findall(".//import", namespaces=root.nsmap)
-    print(import_nodes)
     xpath_query = "//@*"
     otx_document_attributes = root.xpath(xpath_query)
 
