@@ -1,14 +1,13 @@
 import logging, os
 
-from dataclasses import dataclass
 from typing import List
 
 from lxml import etree
 
-from qc_baselib import Configuration, Result, IssueSeverity
+from qc_baselib import Result, IssueSeverity
 
 from qc_otx import constants
-from qc_otx.checks import utils, models
+from qc_otx.checks import models
 
 from qc_otx.checks.core_checker import core_constants
 
