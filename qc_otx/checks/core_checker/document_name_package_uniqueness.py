@@ -25,7 +25,9 @@ def find_otx_files(directory: str) -> List:
 
 
 def get_package_dot_name_attributes(xml_files: List) -> List:
-    """Parse XML files and collect 'name' attributes from root elements."""
+    """Parse XML files and collect 'name' and `package` attributes from root elements.
+    Resulting list will contains name and package in the form: "package.name"
+    """
     package_dot_name_attributes = []
     for file in xml_files:
         try:
@@ -76,14 +78,17 @@ def check_rule(checker_data: models.CheckerData) -> None:
     document_package_dot_name = package_name + "." + document_name
     config_file_path = checker_data.config.get_config_param("OtxFile")
 
+    # Store previous working directory and move to config path dir for relative package paths
     previous_wd = os.getcwd()
-
     os.chdir(os.path.dirname(config_file_path))
 
+    # Split package path by "."
     package_splits = package_name.split(".")
 
+    # For each element of the package full path
+    # Create relative path with .. -> to have the path to the root of the package
+    # Substitute . with / for having the path of the current config, for filtering results
     current_filename_package_path = ""
-
     package_root = ""
     for package_dir in package_splits:
         current_filename_package_path = os.path.join(
@@ -94,29 +99,21 @@ def check_rule(checker_data: models.CheckerData) -> None:
     current_filename_package_path = os.path.join(
         current_filename_package_path, os.path.basename(config_file_path)
     )
-
     package_root = os.path.join(package_root, package_splits[0])
 
-    print("config_file_path: ", config_file_path)
-
-    print("document attribute name: ", document_name)
-    print("document package_name: ", package_name)
-
-    print("package_root: ", package_root)
-    print("current_filename_package_path: ", current_filename_package_path)
-
+    # Collect all otx file path from package root
     package_otx_files = find_otx_files(package_root)
 
     # Filtering out current document name from otx file list
     package_otx_files = [
         x for x in package_otx_files if not current_filename_package_path in x
     ]
-    print("package_otx_files: ", package_otx_files)
+
+    # Collect all otx names in the form package.name
     package_dot_names = get_package_dot_name_attributes(package_otx_files)
-    print("package_dot_names: ", package_dot_names)
 
     is_valid = document_package_dot_name not in package_dot_names
-    print(is_valid)
+
     if not is_valid:
 
         issue_id = checker_data.result.register_issue(
