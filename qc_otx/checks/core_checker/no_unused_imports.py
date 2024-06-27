@@ -50,12 +50,21 @@ def check_rule(checker_data: models.CheckerData) -> None:
         import_prefix = import_node.get("prefix")
         import_package = import_node.get("package")
         import_document = import_node.get("document")
+        import_path = root.getpath(import_node)
         used_prefix_str = import_prefix + ":"
         if is_prefix_never_used_in_attributes(otx_document_attributes, used_prefix_str):
-            checker_data.result.register_issue(
+            issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
-                description=f"Imported otx document [package: {import_package}, document:{import_document}, prefix:{import_prefix}] is never used in current document",
+                description="Issue flagging when an imported otx document is never used in the current otx",
                 level=IssueSeverity.WARNING,
                 rule_uid=rule_uid,
+            )
+
+            checker_data.result.add_xml_location(
+                checker_bundle_name=constants.BUNDLE_NAME,
+                checker_id=core_constants.CHECKER_ID,
+                issue_id=issue_id,
+                xpath=import_path,
+                description=f"Imported otx document [package: {import_package}, document:{import_document}, prefix:{import_prefix}] is never used in current document",
             )
