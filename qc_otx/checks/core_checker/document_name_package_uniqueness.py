@@ -106,6 +106,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         logging.error(
             f"Error in setting package root {package_root}. Folder not found. Abort..."
         )
+        os.chdir(previous_wd)
         return
     # Collect all otx file path from package root
     package_otx_files = find_otx_files(package_root)
