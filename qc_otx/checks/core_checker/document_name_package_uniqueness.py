@@ -64,23 +64,24 @@ def check_rule(checker_data: models.CheckerData) -> None:
         rule_full_name="core.chk_002.document_name_package_uniqueness",
     )
 
-    root = checker_data.input_file_xml_root
-    root_attrib = root.getroot().attrib
+    root = checker_data.input_file_xml_root.getroot()
 
-    if "name" not in root_attrib:
+    document_name = root.get("name")
+    if document_name is None:
         logging.error("No name attribute find in otx root node. Abort...")
         return
 
-    document_name = root_attrib["name"]
-
-    package_name = root_attrib["package"]
+    package_name = root.get("package")
+    if package_name is None:
+        logging.error("No package attribute find in otx root node. Abort...")
+        return
 
     document_package_dot_name = package_name + "." + document_name
-    config_file_path = checker_data.config.get_config_param("OtxFile")
+    input_file_path = checker_data.config.get_config_param("OtxFile")
 
     # Store previous working directory and move to config path dir for relative package paths
     previous_wd = os.getcwd()
-    os.chdir(os.path.dirname(config_file_path))
+    os.chdir(os.path.dirname(input_file_path))
 
     # Split package path by "."
     package_splits = package_name.split(".")
@@ -97,16 +98,26 @@ def check_rule(checker_data: models.CheckerData) -> None:
         package_root = os.path.join(package_root, "..")
 
     current_filename_package_path = os.path.join(
-        current_filename_package_path, os.path.basename(config_file_path)
+        current_filename_package_path, os.path.basename(input_file_path)
     )
     package_root = os.path.join(package_root, package_splits[0])
+
+    # To avoid searching recursively in possibly wrong folder
+    # Check if computed package root or home
+    home_directory = os.path.expanduser("~")
+
+    if os.path.normpath(package_splits[0]) in ["/", home_directory]:
+        logging.error(
+            f"Error in setting package root {package_name}. Home or root folder selected. Abort..."
+        )
+        return
 
     # Collect all otx file path from package root
     package_otx_files = find_otx_files(package_root)
 
     # Filtering out current document name from otx file list
     package_otx_files = [
-        x for x in package_otx_files if not current_filename_package_path in x
+        x for x in package_otx_files if current_filename_package_path not in x
     ]
 
     # Collect all otx names in the form package.name
@@ -115,8 +126,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     is_valid = document_package_dot_name not in package_dot_names
 
     if not is_valid:
-
-        issue_id = checker_data.result.register_issue(
+        checker_data.result.register_issue(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=core_constants.CHECKER_ID,
             description="Issue flagging when otx name is reused in the same package",
