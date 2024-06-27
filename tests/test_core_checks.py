@@ -97,3 +97,47 @@ def test_chk002_negative(
     assert core_issues[0].level == IssueSeverity.ERROR
 
     test_utils.cleanup_files()
+
+
+def test_chk004_positive(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk004"
+    target_file_name = f"Core_Chk004_positive.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_004.no_unused_imports"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk004_negative(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk004"
+    target_file_name = f"Core_Chk004_negative.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_004.no_unused_imports"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.WARNING
+
+    test_utils.cleanup_files()
