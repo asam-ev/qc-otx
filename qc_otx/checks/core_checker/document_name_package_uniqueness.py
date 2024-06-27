@@ -102,16 +102,11 @@ def check_rule(checker_data: models.CheckerData) -> None:
     )
     package_root = os.path.join(package_root, package_splits[0])
 
-    # To avoid searching recursively in possibly wrong folder
-    # Check if computed package root or home
-    home_directory = os.path.expanduser("~")
-
-    if os.path.normpath(package_splits[0]) in ["/", home_directory]:
+    if not os.path.exists(package_root):
         logging.error(
-            f"Error in setting package root {package_name}. Home or root folder selected. Abort..."
+            f"Error in setting package root {package_root}. Folder not found. Abort..."
         )
         return
-
     # Collect all otx file path from package root
     package_otx_files = find_otx_files(package_root)
 
