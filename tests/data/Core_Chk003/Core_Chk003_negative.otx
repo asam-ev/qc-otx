@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0" id="2"
+    name="Core_Chk003_negative"
+    package="Core_Chk003"
+    version="1.0"
+    timestamp="2010-11-11T14:40:10">
+
+    <imports>
+        <import package="org.iso.otx.examples" document="foo" prefix="foo" />
+    </imports>
+    <procedures>
+        <procedure name="test" implements="foo:myImport" id="2-1">
+            <specification> A test procedure </specification>
+        </procedure>
+    </procedures>
+</otx>
