@@ -12,10 +12,10 @@ from qc_otx.checks import models
 from qc_otx.checks.core_checker import core_constants
 
 
-def is_prefix_never_used_in_attributes(attributes: List, prefix: str) -> bool:
+def _is_prefix_never_used_in_attributes(attributes: List, prefix: str) -> bool:
     # Check if the prefix is never used in any attribute value
     for attr in attributes:
-        if prefix in attr:
+        if ":" in attr and prefix in attr.split(":")[0]:
             return False  # Found the prefix in an attribute value
     return True  # Prefix is never used in any attribute value
 
@@ -38,11 +38,11 @@ def check_rule(checker_data: models.CheckerData) -> None:
         rule_full_name="core.chk_004.no_unused_imports",
     )
 
-    root = checker_data.input_file_xml_root
+    tree = checker_data.input_file_xml_root
+    root = tree.getroot()
 
-    namespaces = {"ns": "http://iso.org/OTX/1.0.0"}
-    import_nodes = root.findall(".//ns:import", namespaces)
-
+    import_nodes = root.findall(".//import", namespaces=root.nsmap)
+    print(import_nodes)
     xpath_query = "//@*"
     otx_document_attributes = root.xpath(xpath_query)
 
@@ -50,9 +50,8 @@ def check_rule(checker_data: models.CheckerData) -> None:
         import_prefix = import_node.get("prefix")
         import_package = import_node.get("package")
         import_document = import_node.get("document")
-        import_path = root.getpath(import_node)
-        used_prefix_str = import_prefix + ":"
-        if is_prefix_never_used_in_attributes(otx_document_attributes, used_prefix_str):
+        import_path = tree.getpath(import_node)
+        if _is_prefix_never_used_in_attributes(otx_document_attributes, import_prefix):
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
