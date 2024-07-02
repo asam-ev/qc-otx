@@ -36,11 +36,11 @@ def check_rule(checker_data: models.CheckerData) -> None:
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
 
-    # Define the type you are looking for
+    # Define the node names involved in the check
     desired_type = "specification"
     desired_sibling_name = "realisation"
 
-    # Use XPath to find all nodes of the specified type
+    # Use XPath to find all nodes of the "specification" type
     specification_nodes = tree.xpath(f"//*[local-name() = '{desired_type}']")
 
     # Check siblings for each specification node
@@ -59,9 +59,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         has_issue = len(current_siblings) == 0 and not current_has_content
 
         current_xpath = tree.getpath(spec_node)
-        print("node.text ", spec_node.text)
-        print("current_xpath ", current_xpath)
-        print("current_has_content ", current_has_content)
+
         if has_issue:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
@@ -78,6 +76,3 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 xpath=current_xpath,
                 description=f"Specification node {current_xpath} has no realisation and empty string as content",
             )
-
-        # print("Found a sibling with the name 'realisation':")
-        # print(etree.tostring(sibling, pretty_print=True).decode("utf-8"))
