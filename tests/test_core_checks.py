@@ -603,8 +603,8 @@ def test_chk010_negative(
     )
     assert len(core_issues) == 3
 
-    assert "Duplicated name a" in core_issues[0].locations[0].description
-    assert "Duplicated name x" in core_issues[1].locations[0].description
+    assert "Duplicated name x" in core_issues[0].locations[0].description
+    assert "Duplicated name a" in core_issues[1].locations[0].description
     assert "Duplicated name b" in core_issues[2].locations[0].description
 
     assert core_issues[0].level == IssueSeverity.WARNING

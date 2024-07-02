@@ -56,23 +56,22 @@ def check_rule(checker_data: models.CheckerData) -> None:
         result = procedure_node.xpath(xpath_expr)
 
         # Dictionary to store the found names and their corresponding XPath expressions
-        name_to_xpath = {}
-        duplicates = {}
+        name_map = dict()
 
         # Build the XPaths for elements and check for duplicates
         for elem in result:
             name = elem.get("name")
+            if name is None:
+                continue
             xpath = tree.getpath(elem)
 
-            if name in name_to_xpath:
-                if name not in duplicates:
-                    duplicates[name] = [name_to_xpath[name]]
-                duplicates[name].append(xpath)
-            else:
-                name_to_xpath[name] = xpath
+            if name not in name_map:
+                name_map[name] = []
 
-        for name, xpaths in duplicates.items():
-            if len(xpaths) == 0:
+            name_map[name].append(xpath)
+
+        for name, xpaths in name_map.items():
+            if len(xpaths) <= 1:
                 continue
 
             error_string = f"Duplicated name {name}"
