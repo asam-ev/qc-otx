@@ -15,9 +15,8 @@
         <term xsi:type="StringLiteral" value="AssemblyLine" />
       </realisation>
     </validity>
-    <!-- Workshop validity has no realisation and an empty specification -->
-    <validity name="Workshop" id="4-v1">
-      <specification></specification>
+    <!-- Workshop validity has no realisation and no realisation -->
+    <validity name="Workshop" id=" 4-v1">
     </validity>
   </validities>
 

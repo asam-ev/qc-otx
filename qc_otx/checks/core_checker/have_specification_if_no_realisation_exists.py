@@ -11,6 +11,13 @@ from qc_otx.checks import models
 
 from qc_otx.checks.core_checker import core_constants
 
+NODES_WITH_SPECIFICATION_AND_REALISATION = [
+    "declaration",
+    "procedure",
+    "signature",
+    "validity",
+]
+
 
 def check_rule(checker_data: models.CheckerData) -> None:
     """
@@ -36,35 +43,33 @@ def check_rule(checker_data: models.CheckerData) -> None:
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
 
-    # Define the node names involved in the check
-    desired_type = "specification"
-    desired_sibling_name = "realisation"
+    # Construct the XPath expression using the union operator
+    xpath_expr = "|".join(
+        [f"//{node}" for node in NODES_WITH_SPECIFICATION_AND_REALISATION]
+    )
 
-    # Use XPath to find all nodes of the "specification" type
-    specification_nodes = tree.xpath(f"//*[local-name() = '{desired_type}']")
+    # Use XPath to find all matching elements
+    result = root.xpath(xpath_expr)
 
-    # Check siblings for each specification node
-    for spec_node in specification_nodes:
+    for node in result:
+        has_realisation = node.find("realisation") is not None
+        has_specification = node.find("specification") is not None
+        specification_has_content = (
+            has_specification and node.find("specification").text is not None
+        )
 
-        current_has_content = spec_node.text is not None
+        is_valid = True
 
-        current_siblings = []
-        parent = spec_node.getparent()
-        if parent is not None:
-            siblings = parent.getchildren()
-            for sibling in siblings:
-                if sibling != spec_node and sibling.tag.endswith(desired_sibling_name):
-                    current_siblings.append(sibling)
+        if not has_realisation:
+            is_valid = has_specification and specification_has_content
 
-        has_issue = len(current_siblings) == 0 and not current_has_content
+        current_xpath = tree.getpath(node)
 
-        current_xpath = tree.getpath(spec_node)
-
-        if has_issue:
+        if not is_valid:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
-                description="Issue flagging when specification node with no realisation has empty content",
+                description="Issue to check if empty realisation have content in specification",
                 level=issue_severity,
                 rule_uid=rule_uid,
             )
@@ -74,5 +79,5 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 checker_id=core_constants.CHECKER_ID,
                 issue_id=issue_id,
                 xpath=current_xpath,
-                description=f"Specification node {current_xpath} has no realisation and empty string as content",
+                description=f"Node {current_xpath} has no realisation and no specification or empty string in specification",
             )
