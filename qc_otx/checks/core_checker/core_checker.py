@@ -14,6 +14,8 @@ from qc_otx.checks.core_checker import (
     no_dead_import_links,
     no_unused_imports,
     have_specification_if_no_realisation_exists,
+    public_main_procedure,
+    mandatory_constant_initialization,
 )
 
 
@@ -33,6 +35,8 @@ def run_checks(checker_data: models.CheckerData) -> None:
         no_dead_import_links.check_rule,  # Chk003
         no_unused_imports.check_rule,  # Chk004
         have_specification_if_no_realisation_exists.check_rule,  # Chk007
+        public_main_procedure.check_rule,  # Chk008
+        mandatory_constant_initialization.check_rule,  # Chk009
     ]
 
     for rule in rule_list:

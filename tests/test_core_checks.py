@@ -317,3 +317,247 @@ def test_chk007_negative_empty_string(
     assert core_issues[0].level == IssueSeverity.WARNING
 
     test_utils.cleanup_files()
+
+
+def test_chk008_positive(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_positive.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk008_positive_two_mains(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_positive_two_mains.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk008_positive_no_main(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_positive_no_main.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk008_negative(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_negative.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()
+
+
+def test_chk008_negative_two_mains(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_negative_two_mains.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()
+
+
+def test_chk008_negative_no_visibility(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk008"
+    target_file_name = f"Core_Chk008_negative_no_visibility.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()
+
+
+def test_chk009_positive(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk009"
+    target_file_name = f"Core_Chk009_positive.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk009_positive_multiple(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk009"
+    target_file_name = f"Core_Chk009_positive_multiple.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk009_negative(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk009"
+    target_file_name = f"Core_Chk009_negative.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()
+
+
+def test_chk009_negative_multiple(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk009"
+    target_file_name = f"Core_Chk009_negative_multiple.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()
+
+
+def test_chk009_negative_multiple_errors(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk009"
+    target_file_name = f"Core_Chk009_negative_multiple_errors.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
+    )
+    assert len(core_issues) == 2
+    assert core_issues[0].level == IssueSeverity.ERROR
+    assert core_issues[1].level == IssueSeverity.ERROR
+
+    test_utils.cleanup_files()

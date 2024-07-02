@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx id="2"
+  name="Core_Chk009_negative_multiple"
+  package="Core_Chk009"
+  version="1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://iso.org/OTX/1.0.0 Core/otx.xsd"
+  timestamp="2010-11-11T14:40:10">
+
+  <declarations>
+    <constant name="PI" visibility="PUBLIC" id="3-d1">
+      <specification>This defines global constant</specification>
+      <realisation>
+        <dataType xsi:type="Float">
+          <init value="3.14159265" />
+        </dataType>
+      </realisation>
+    </constant>
+    <!-- constant 2_PI not initialized -->
+    <constant name="2_PI" visibility="PRIVATE" id="3-d2">
+      <specification>This defines another global constant</specification>
+    </constant>
+  </declarations>
+
+</otx>
