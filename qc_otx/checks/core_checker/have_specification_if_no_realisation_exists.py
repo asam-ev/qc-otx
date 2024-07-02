@@ -55,7 +55,9 @@ def check_rule(checker_data: models.CheckerData) -> None:
         has_realisation = node.find("realisation") is not None
         has_specification = node.find("specification") is not None
         specification_has_content = (
-            has_specification and node.find("specification").text is not None
+            has_specification
+            and node.find("specification").text is not None
+            and node.find("specification").text != '""'
         )
 
         is_valid = True
