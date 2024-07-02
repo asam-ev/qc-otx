@@ -14,9 +14,19 @@ from qc_otx.checks.core_checker import core_constants
 
 def check_rule(checker_data: models.CheckerData) -> None:
     """
-    Implements core checker rule Core_Chk010
-    Criterion: The value of a nodes name attribute should be unique among all nodes in a procedure.
-    Severity: Warning
+    Rule ID: asam.net:otx:1.0.0:core.chk_010.unique_node_names
+
+    Description: The value of a nodes name attribute should be unique among all nodes in a procedure.
+
+    Severity: WARNING
+
+    Version range: [1.0.0, )
+
+    Remark:
+        None
+
+    More info at
+        -
     """
     logging.info("Executing unique_node_names check")
 
