@@ -16,6 +16,7 @@ from qc_otx.checks.core_checker import (
     have_specification_if_no_realisation_exists,
     public_main_procedure,
     mandatory_constant_initialization,
+    unique_node_names,
 )
 
 
@@ -37,6 +38,7 @@ def run_checks(checker_data: models.CheckerData) -> None:
         have_specification_if_no_realisation_exists.check_rule,  # Chk007
         public_main_procedure.check_rule,  # Chk008
         mandatory_constant_initialization.check_rule,  # Chk009
+        unique_node_names.check_rule,  # Chk010
     ]
 
     for rule in rule_list:
