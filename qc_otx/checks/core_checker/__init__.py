@@ -7,3 +7,5 @@ from . import no_dead_import_links as no_dead_import_links
 from . import (
     have_specification_if_no_realisation_exists as have_specification_if_no_realisation_exists,
 )
+from . import public_main_procedure as public_main_procedure
+from . import mandatory_constant_initialization as mandatory_constant_initialization
