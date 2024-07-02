@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0" id="2"
+  name="Core_Chk007_positive"
+  package="Core_Chk007"
+  version="1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://iso.org/OTX/1.0.0 Core/otx.xsd"
+  timestamp="2010-11-11T14:40:10">
+
+  <validities>
+    <validity name="Workshop" id="4-v1">
+      <specification>Valid if executed in a workshop environment</specification>
+      <realisation xsi:type="IsEqual">
+        <term xsi:type="StringValue" valueOf="context:LOCATION" />
+        <term xsi:type="StringLiteral" value="DealershopWorkshop" />
+      </realisation>
+    </validity>
+    <validity name="Assembly" id="4-v2">
+      <specification>Valid if executed at an assembly line</specification>
+      <realisation xsi:type="IsEqual">
+        <term xsi:type="StringValue" valueOf="context:LOCATION" />
+        <term xsi:type="StringLiteral" value="AssemblyLine" />
+      </realisation>
+    </validity>
+  </validities>
+
+</otx>

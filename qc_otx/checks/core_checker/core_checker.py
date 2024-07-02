@@ -13,6 +13,7 @@ from qc_otx.checks.core_checker import (
     document_name_package_uniqueness,
     no_dead_import_links,
     no_unused_imports,
+    have_specification_if_no_realisation_exists,
 )
 
 
@@ -31,6 +32,7 @@ def run_checks(checker_data: models.CheckerData) -> None:
         document_name_package_uniqueness.check_rule,  # Chk002
         no_dead_import_links.check_rule,  # Chk003
         no_unused_imports.check_rule,  # Chk004
+        have_specification_if_no_realisation_exists.check_rule,  # Chk007
     ]
 
     for rule in rule_list:
