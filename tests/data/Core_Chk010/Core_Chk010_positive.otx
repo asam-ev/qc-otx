@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx id="2"
+  name="Core_Chk010_positive"
+  package="Core_Chk010"
+  version="1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://iso.org/OTX/1.0.0 Core/otx.xsd"
+  timestamp="2010-11-11T14:40:10">
+
+  <imports>
+    <import package="org.iso.otx.examples" document="Signatures" prefix="sig" />
+  </imports>
+
+
+  <procedures>
+    <procedure name="main" visibility="PUBLIC" id="20-p1">
+      <specification>Demonstration of variable, constant and parameter declarations</specification>
+      <realisation>
+        <declarations>
+          <variable name="y" id="20-d1" />
+        </declarations>
+        <flow>
+          <action id="call1">
+            <specification>Calls procedure located in same document</specification>
+            <realisation xsi:type="ProcedureCall" procedure="ComputeDelta">
+              <arguments>
+                <inArg param="a">
+                  <term xsi:type="IntegralLiteral" value="5" />
+                </inArg>
+                <inArg param="b">
+                  <term xsi:type="IntegralValue" valueOf="x" />
+                </inArg>
+                <outArg param="delta">
+                  <variable xsi:type="IntegerVariable" name="d" />
+                </outArg>
+              </arguments>
+            </realisation>
+          </action>
+          <action id="call2">
+            <specification>Calls procedure by an external signature</specification>
+            <realisation xsi:type="ProcedureCall" procedure="sig:modifyValue">
+              <arguments>
+                <inoutArg param="value">
+                  <variable xsi:type="IntegerVariable" name="x" />
+                </inoutArg>
+              </arguments>
+            </realisation>
+          </action>
+        </flow>
+      </realisation>
+    </procedure>
+    <procedure name="computeDelta" id="20-p2">
+      <specification>Computes the difference between two values</specification>
+      <realisation>
+        <parameters>
+          <inParam name="a" id="20-d2" />
+          <inParam name="b" id="20-d3" />
+          <outParam name="delta" id="20-d4" />
+        </parameters>
+        <flow />
+      </realisation>
+    </procedure>
+  </procedures>
+</otx>
