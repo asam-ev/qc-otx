@@ -74,11 +74,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
             if len(xpaths) <= 1:
                 continue
 
-            error_string = f"Duplicated name {name}"
-            for xpath in xpaths:
-                error_string += f" defined at {xpath}"
-
-            current_xpath = xpaths[0]
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
@@ -87,10 +82,14 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 rule_uid=rule_uid,
             )
 
+            error_string = f"Duplicated name {name}"
+            for xpath in xpaths:
+                error_string += f" defined at {xpath}"
+
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
                 issue_id=issue_id,
-                xpath=current_xpath,
-                description=f"Procedure {procedure_name} at {current_xpath} contains duplicated name. {error_string}",
+                xpath=xpaths,
+                description=f"Procedure {procedure_name} at {xpath} contains duplicated name. {error_string}",
             )
