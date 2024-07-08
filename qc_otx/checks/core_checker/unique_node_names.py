@@ -82,14 +82,10 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 rule_uid=rule_uid,
             )
 
-            error_string = f"Duplicated name {name}"
-            for xpath in xpaths:
-                error_string += f" defined at {xpath}"
-
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=core_constants.CHECKER_ID,
                 issue_id=issue_id,
                 xpath=xpaths,
-                description=f"Procedure {procedure_name} contains duplicated name. {error_string}",
+                description=f"Procedure {procedure_name} contains duplicated name.",
             )
