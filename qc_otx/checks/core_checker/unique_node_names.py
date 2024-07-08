@@ -91,5 +91,5 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 checker_id=core_constants.CHECKER_ID,
                 issue_id=issue_id,
                 xpath=xpaths,
-                description=f"Procedure {procedure_name} at {xpath} contains duplicated name. {error_string}",
+                description=f"Procedure {procedure_name} contains duplicated name. {error_string}",
             )
