@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx id="2"
+  name="Core_Chk008_positive_no_main"
+  package="Core_Chk008"
+  version="1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://iso.org/OTX/1.0.0 Core/otx.xsd"
+  timestamp="2010-11-11T14:40:10">
+
+  <imports>
+    <import package="org.iso.otx.examples" document="Signatures" prefix="sig" />
+    <import package="org.iso.otx.examples" document="Validities" prefix="val" />
+  </imports>
+
+  <procedures>
+    <procedure name="writeDebugMsg" implements="sig:WriteMsg" validFor="val:DebugMode"
+      visibility="PACKAGE" id="7-p2">
+      <specification>An empty procedure implementing a signature, with validity information.</specification>
+      <realisation>
+        <flow />
+      </realisation>
+    </procedure>
+  </procedures>
+
+
+</otx>
