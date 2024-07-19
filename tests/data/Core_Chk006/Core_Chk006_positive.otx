@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0" id="2"
+    name="Core_Chk006_positive"
+    package="Core_Chk006"
+    version="1.0"
+    timestamp="2010-11-11T14:40:10"
+    xmlns:xsi="http://www.w3.org/2001/XMLSChema-instance">
+
+    <imports>
+        <import package="Core_Chk006" document="ImportExample" prefix="imp" />
+    </imports>
+    <procedures>
+        <procedure name="test" implements="imp:myImport" id="2-1">
+            <specification> A test procedure </specification>
+        </procedure>
+    </procedures>
+</otx>

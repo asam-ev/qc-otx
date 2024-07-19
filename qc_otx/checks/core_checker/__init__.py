@@ -10,3 +10,7 @@ from . import (
 from . import public_main_procedure as public_main_procedure
 from . import mandatory_constant_initialization as mandatory_constant_initialization
 from . import unique_node_names as unique_node_names
+from . import no_use_of_undefined_import_prefixes as no_use_of_undefined_import_prefixes
+from . import (
+    match_of_imported_document_data_model_version as match_of_imported_document_data_model_version,
+)
