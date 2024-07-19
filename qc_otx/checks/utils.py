@@ -1,6 +1,26 @@
 from lxml import etree
 from typing import Union, List
 from qc_otx.checks.models import QueueNode, AttributeInfo
+import re
+
+
+def get_data_model_version(root: etree._Element):
+    """Get data model version from input root. The data model version is the number indicated as
+    in the attribute  xmlns as "http://iso.org/OTX/<version >"
+
+    Args:
+        root (etree._Element): the xml root to get data model version
+
+    Returns:
+        _type_: the read data model version. None if attribute xmlns is not found
+    """
+    xmlns_version = None
+    xmlns_regex = "http://iso.org/OTX/*"
+    for key, value in root.nsmap.items():
+        if re.match(xmlns_regex, value):
+            xmlns_version = value.replace(xmlns_regex[:-1], "")
+            break
+    return xmlns_version
 
 
 def get_all_attributes(

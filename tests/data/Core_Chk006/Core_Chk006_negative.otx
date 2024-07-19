@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<! <!-- Inserted rule violatio - This document has version 2.0.0 but imported document is with version
+1.0.0-->
+<otx xmlns="http://iso.org/OTX/2.0.0" id="2"
+    name="Core_Chk006_negative"
+    package="Core_Chk006"
+    version="1.0"
+    timestamp="2010-11-11T14:40:10">
+
+    <imports>
+        <import package="Core_Chk006" document="ImportExample" prefix="foo" />
+    </imports>
+    <procedures>
+        <procedure name="test" implements="foo:myImport" id="2-1">
+            <specification> A test procedure </specification>
+        </procedure>
+    </procedures>
+</otx>

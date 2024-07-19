@@ -11,8 +11,6 @@ from qc_otx.checks import models, utils
 
 from qc_otx.checks.core_checker import core_constants
 
-logging.basicConfig(level=logging.DEBUG)
-
 RULE_SEVERITY = IssueSeverity.ERROR
 
 OTX_LINK_ATTRIBUTES = set()
