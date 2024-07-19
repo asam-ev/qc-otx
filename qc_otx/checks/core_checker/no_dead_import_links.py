@@ -45,14 +45,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
         import_prefix = import_node.get("prefix")
         import_package = import_node.get("package")
         import_document = import_node.get("document")
+        logging.debug(
+            f"import_prefix: {import_prefix} - import_package {import_package} - import_document {import_document}"
+        )
         import_xpath = tree.getpath(import_node)
-        # Convert package name first.second.file.otx to filesystem path first/second/file.otx
-        import_package_splits = import_package.split(".")
-        import_path = ""
-        for import_package_element in import_package_splits:
-            import_path = os.path.join(import_path, import_package_element)
-        full_imported_path = os.path.join(import_path, import_document + ".otx")
+        # Import path checked in the same input file directory following
+        # Recommendation: Use only references inside the same package.
+        full_imported_path = os.path.join(import_document + ".otx")
 
+        logging.debug(f"cwd: {os.getcwd()}")
+        logging.debug(f"full_imported_path: {full_imported_path}")
         # Check if file exists
         import_file_exists = os.path.exists(full_imported_path)
 

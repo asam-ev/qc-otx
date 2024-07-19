@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0" id="1"
+    name="ImportExample"
+    package="Core_Chk005"
+    version="1.0"
+    timestamp="2010-03-18T14:40:10">
+
+    <specification> Example for showing the OTX document root structure </specification>
+</otx>
