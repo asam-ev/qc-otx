@@ -232,6 +232,51 @@ def test_chk005_negative(
     test_utils.cleanup_files()
 
 
+def test_chk006_positive(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk006"
+    target_file_name = f"Core_Chk006_positive.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_006.match_of_imported_document_data_model_version"
+    )
+    assert len(core_issues) == 0
+    test_utils.cleanup_files()
+
+
+def test_chk006_negative(
+    monkeypatch,
+) -> None:
+    base_path = "tests/data/Core_Chk006"
+    target_file_name = f"Core_Chk006_negative.otx"
+    target_file_path = os.path.join(base_path, target_file_name)
+
+    test_utils.create_test_config(target_file_path)
+
+    test_utils.launch_main(monkeypatch)
+
+    result = Result()
+    result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    core_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:core.chk_006.match_of_imported_document_data_model_version"
+    )
+    assert len(core_issues) == 1
+    assert core_issues[0].level == IssueSeverity.ERROR
+    assert "1.0.0" in core_issues[0].locations[0].description
+
+    test_utils.cleanup_files()
+
+
 def test_chk007_positive(
     monkeypatch,
 ) -> None:
