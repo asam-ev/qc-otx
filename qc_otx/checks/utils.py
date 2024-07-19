@@ -1,5 +1,42 @@
 from lxml import etree
-from typing import Union
+from typing import Union, List
+from qc_otx.checks.models import QueueNode, AttributeInfo
+
+
+def get_all_attributes(
+    tree: etree._ElementTree, root: etree._Element
+) -> List[AttributeInfo]:
+    """Function to get all attributes in input xml document
+
+    Args:
+        tree (etree._ElementTree): the xml tree to analyse
+        root (etree._Element): the root node of the xml to analyse
+
+    Returns:
+        _type_: _description_
+    """
+    attributes = []
+    stack = [
+        QueueNode(root, tree.getpath(root))
+    ]  # Initialize stack with the root element
+
+    while stack:
+        current_node = stack.pop()
+        current_element = current_node.element
+        current_xpath = current_node.xpath
+
+        # Process attributes of the current element
+        for attr, value in current_element.attrib.items():
+            attributes.append(AttributeInfo(attr, value, current_xpath))
+
+        # Push children to the stack for further processing
+        stack.extend(
+            reversed(
+                [QueueNode(x, tree.getpath(x)) for x in current_element.getchildren()]
+            )
+        )
+
+    return attributes
 
 
 def get_standard_schema_version(root: etree._ElementTree) -> Union[str, None]:
