@@ -11,8 +11,6 @@ from qc_otx.checks import models
 
 from qc_otx.checks.data_type_checker import data_type_constants
 
-logging.basicConfig(level=logging.DEBUG)
-
 
 def check_rule(checker_data: models.CheckerData) -> None:
     """
@@ -81,9 +79,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
         current_result_name = current_result.get("name")
         if current_result_name is None:
             continue
+
         logging.debug(f"current_value {current_value}")
+        if current_result_name not in variable_type_dict:
+            continue
+
         current_variable_type = variable_type_dict[current_result_name]
         logging.debug(f"current_variable_type {current_variable_type}")
+
+        if current_variable_type not in signature_dict:
+            continue
 
         has_issue = current_value not in signature_dict[current_variable_type]
 
