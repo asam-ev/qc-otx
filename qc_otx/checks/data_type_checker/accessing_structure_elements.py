@@ -24,8 +24,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
     Remark:
         None
 
-    More info at
-        -
     """
     logging.info("Executing accessing_structure_elements check")
 
