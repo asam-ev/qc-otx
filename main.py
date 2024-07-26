@@ -6,6 +6,7 @@ from lxml import etree
 from qc_baselib import Configuration, Result
 from qc_otx import constants
 from qc_otx.checks.core_checker import core_checker
+from qc_otx.checks.data_type_checker import data_type_checker
 from qc_otx.checks import utils, models
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
@@ -56,6 +57,9 @@ def main():
         )
         # 1. Run basic checks
         core_checker.run_checks(checker_data)
+
+        # 2. Run data type checks
+        data_type_checker.run_checks(checker_data)
 
         result.write_to_file(
             config.get_checker_bundle_param(
