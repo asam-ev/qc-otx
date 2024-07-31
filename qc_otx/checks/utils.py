@@ -1,5 +1,62 @@
 from lxml import etree
-from typing import Union
+from typing import Union, List
+from qc_otx.checks.models import QueueNode, AttributeInfo
+import re
+
+
+def get_data_model_version(root: etree._Element):
+    """Get data model version from input root. The data model version is the number indicated as
+    in the attribute  xmlns as "http://iso.org/OTX/<version >"
+
+    Args:
+        root (etree._Element): the xml root to get data model version
+
+    Returns:
+        _type_: the read data model version. None if attribute xmlns is not found
+    """
+    xmlns_version = None
+    xmlns_regex = "http://iso.org/OTX/*"
+    for key, value in root.nsmap.items():
+        if re.match(xmlns_regex, value):
+            xmlns_version = value.replace(xmlns_regex[:-1], "")
+            break
+    return xmlns_version
+
+
+def get_all_attributes(
+    tree: etree._ElementTree, root: etree._Element
+) -> List[AttributeInfo]:
+    """Function to get all attributes in input xml document
+
+    Args:
+        tree (etree._ElementTree): the xml tree to analyse
+        root (etree._Element): the root node of the xml to analyse
+
+    Returns:
+        _type_: _description_
+    """
+    attributes = []
+    stack = [
+        QueueNode(root, tree.getpath(root))
+    ]  # Initialize stack with the root element
+
+    while stack:
+        current_node = stack.pop()
+        current_element = current_node.element
+        current_xpath = current_node.xpath
+
+        # Process attributes of the current element
+        for attr, value in current_element.attrib.items():
+            attributes.append(AttributeInfo(attr, value, current_xpath))
+
+        # Push children to the stack for further processing
+        stack.extend(
+            reversed(
+                [QueueNode(x, tree.getpath(x)) for x in current_element.getchildren()]
+            )
+        )
+
+    return attributes
 
 
 def get_standard_schema_version(root: etree._ElementTree) -> Union[str, None]:
