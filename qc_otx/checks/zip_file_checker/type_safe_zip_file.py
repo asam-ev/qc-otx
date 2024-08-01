@@ -71,7 +71,8 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 if current_type is None:
                     continue
                 logging.debug(f"current_type : {current_type}")
-                string_type_num += current_type == "String"
+                if current_type == "String":
+                    string_type_num += 1
 
             has_issue = string_type_num == 0
             if has_issue:
