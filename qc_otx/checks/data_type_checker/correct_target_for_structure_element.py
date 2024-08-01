@@ -7,8 +7,6 @@ from qc_otx.checks import models
 
 from qc_otx.checks.data_type_checker import data_type_constants
 
-logging.basicConfig(level=logging.DEBUG)
-
 
 def check_rule(checker_data: models.CheckerData) -> None:
     """
