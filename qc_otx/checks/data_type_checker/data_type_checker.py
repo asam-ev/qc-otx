@@ -10,6 +10,7 @@ from qc_otx.checks import utils, models
 from qc_otx.checks.data_type_checker import (
     data_type_constants,
     accessing_structure_elements,
+    correct_target_for_structure_element,
 )
 
 
@@ -25,6 +26,7 @@ def run_checks(checker_data: models.CheckerData) -> None:
 
     rule_list = [
         accessing_structure_elements.check_rule,  # Chk001
+        correct_target_for_structure_element.check_rule,  # Chk008
     ]
 
     for rule in rule_list:
