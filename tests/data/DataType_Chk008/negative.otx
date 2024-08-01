@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<otx
+  xmlns:dataType="http://iso.org/OTX/1.0.0/DataType"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="DataTypesExample"
+  id="toplevel_1d0fe717ed994a2ea5870a14f4229fdd"
+  version="1.0.0.0" timestamp="2017-03-09T06:00:00" package="Examples"
+  xsi:schemaLocation="http://iso.org/OTX/1.0.0 ../Core/otx.xsd
+                      http://iso.org/OTX/1.0.0/DataType ../ASAMExtensionInterface/otxIFD_DataType.xsd">
+  <signatures>
+    <signature name="Contact" id="Signature1_ba9e0455b76442608fa347733f54c779">
+      <realisation xsi:type="dataType:StructureSignature">
+        <dataType:elements>
+          <dataType:element name="FirstName"
+            id="DatatypeElementDeclaration1_7a0bf885ce0c40d3b1149363c971ed3e">
+            <realisation>
+              <dataType xsi:type="String" />
+            </realisation>
+          </dataType:element>
+          <dataType:element name="LastName"
+            id="DatatypeElementDeclaration2_e06fcd61df02444bb387562e5abf70b4">
+            <realisation>
+              <dataType xsi:type="String" />
+            </realisation>
+          </dataType:element>
+          <dataType:element name="Age"
+            id="DatatypeElementDeclaration3_adca2aef468d4164a4fdf75940e902e9">
+            <realisation>
+              <dataType xsi:type="Integer" />
+            </realisation>
+          </dataType:element>
+          <dataType:element name="Category"
+            id="DatatypeElementDeclaration4_03fb4d9861474a27bbfac8bbd1fc19e2">
+            <realisation>
+              <dataType xsi:type="dataType:Enumeration" enumerationType="ContactCategories">
+                <dataType:init>Private</dataType:init>
+              </dataType>
+            </realisation>
+          </dataType:element>
+        </dataType:elements>
+      </realisation>
+    </signature>
+    <signature name="ContactCategories" id="Signature2_dd38615b66d4435aba6f0933112bb9af">
+      <realisation xsi:type="dataType:EnumerationSignature">
+        <dataType:elements>
+          <dataType:element name="Business"
+            id="EnumerationElementDeclaration1_70bc5e1fc1c94a15a46355ddc993b088" />
+          <dataType:element name="Private"
+            id="EnumerationElementDeclaration2_ee59e279266349458568b5da5b2960ab" />
+        </dataType:elements>
+      </realisation>
+    </signature>
+  </signatures>
+  <procedures>
+    <procedure name="main" id="id2_1b01991588ef43bdb8e40890bf0bd856" visibility="PUBLIC">
+      <realisation>
+        <declarations>
+          <variable name="Contact1" id="VariableDeclaration1_c1d18e0b0afd417cb654c6198a2fe835">
+            <realisation>
+              <dataType xsi:type="dataType:Structure" structureType="Contact" />
+            </realisation>
+          </variable>
+          <variable name="Contact2" id="VariableDeclaration2_a3b421e035654e66bf1bb58b886d1bee">
+            <realisation>
+              <dataType xsi:type="dataType:Structure" structureType="Contact" />
+            </realisation>
+          </variable>
+        </declarations>
+        <flow>
+          <action name="Assignment1" id="Assignment_6dd484f2e11d4a7cb9d17b97a3338573">
+            <specification>Assignment of string literal to structure element</specification>
+            <realisation xsi:type="Assignment">
+              <result xsi:type="StringVariable" name="Contact1">
+                <path>
+                  <!-- Inserted rule violation here. MainName not present in structure signature-->
+                  <path_instance xsi:type="StringLiteral" value="MainName" />
+                </path>
+              </result>
+              <term xsi:type="StringLiteral" value="Mr." />
+            </realisation>
+          </action>
+          <action name="Assignment2" id="Assignment_a79fb06c726e4142a593529b8b1d376d">
+            <realisation xsi:type="Assignment">
+              <result xsi:type="StringVariable" name="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="LastName" />
+                </path>
+              </result>
+              <term xsi:type="StringLiteral" value="Bean" />
+            </realisation>
+          </action>
+          <action name="Assignment3" id="Assignment_b599bafe02234deda75c6e7466f29cc5">
+            <realisation xsi:type="Assignment">
+              <result xsi:type="IntegerVariable" name="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="Age" />
+                </path>
+              </result>
+              <term xsi:type="IntegerLiteral" value="42" />
+            </realisation>
+          </action>
+          <action name="Assignment4" id="Assignment_055ee4a3dd1043a69808b9c1fea62023">
+            <specification>Assignment of enumeration element to structure element</specification>
+            <realisation xsi:type="Assignment">
+              <result xsi:type="dataType:EnumerationVariable" name="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="Category" />
+                </path>
+              </result>
+              <term xsi:type="dataType:EnumerationLiteral" enumeration="ContactCategories"
+                elementName="Business" />
+            </realisation>
+          </action>
+          <action name="Assignment5" id="Assignment_a20c1df24e3b43ffadb7eea8e1982052">
+            <specification>Assignment of structure element to another structure element</specification>
+            <realisation xsi:type="Assignment">
+              <result xsi:type="StringVariable" name="Contact2">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="FirstName" />
+                </path>
+              </result>
+              <term xsi:type="StringValue" valueOf="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="FirstName" />
+                </path>
+              </term>
+            </realisation>
+          </action>
+          <action name="Assignment6" id="Assignment_59e5caa3c14d4c32b194907ecd421bcd">
+            <realisation xsi:type="Assignment">
+              <result xsi:type="StringVariable" name="Contact2">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="LastName" />
+                </path>
+              </result>
+              <term xsi:type="StringValue" valueOf="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="LastName" />
+                </path>
+              </term>
+            </realisation>
+          </action>
+          <action name="Assignment7" id="Assignment_f67e1d83941546ed9b01dec9b36de18f">
+            <realisation xsi:type="Assignment">
+              <result xsi:type="IntegerVariable" name="Contact2">
+                <path>
+                  <!-- Inserted rule violation here. DateOfBirth not present in structure
+                  signature-->
+                  <path_instance xsi:type="StringLiteral" value="DateOfBirth" />
+                </path>
+              </result>
+              <term xsi:type="IntegerValue" valueOf="Contact1">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="Age" />
+                </path>
+              </term>
+            </realisation>
+          </action>
+          <action name="Assignment8" id="Assignment_27c5c43232814bb195e83b2614cc0c07">
+            <realisation xsi:type="Assignment">
+              <result xsi:type="dataType:EnumerationVariable" name="Contact2">
+                <path>
+                  <stepByName xsi:type="StringLiteral" value="Category" />
+                </path>
+              </result>
+              <term xsi:type="dataType:EnumerationValue" valueOf="Contact1">
+                <dataType:path>
+                  <stepByName xsi:type="StringLiteral" value="Category" />
+                </dataType:path>
+              </term>
+            </realisation>
+          </action>
+        </flow>
+      </realisation>
+    </procedure>
+  </procedures>
+</otx>
