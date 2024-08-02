@@ -60,7 +60,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
         has_issue = realisations is not None and len(realisations) != 0
         if has_issue:
-            current_xpath = tree.getpath(state_machine_procedure)
+            current_xpath = tree.getelementpath(state_machine_procedure)
             procedure_realisation_xpath = tree.getpath(realisations[0])
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
