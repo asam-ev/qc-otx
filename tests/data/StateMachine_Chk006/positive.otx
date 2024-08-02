@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<otx xmlns="http://iso.org/OTX/1.0.0"
+    xmlns:otx="http://iso.org/OTX/1.0.0"
+    xmlns:hmi="http://iso.org/OTX/1.0.0/HMI"
+    xmlns:event="http://iso.org/OTX/1.0.0/Event"
+    xmlns:smp="http://iso.org/OTX/1.0.0/StateMachineProcedure"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="id_d1731ec80bc14b00b12ccbae5bd159ff"
+    name="StateMachineExample" package="Examples" version="1.0.0.0"
+    timestamp="2017-11-17T00:01:03.1968545+01:00"
+    xsi:schemaLocation="http://iso.org/OTX/1.0.0 ../Core/otx.xsd
+                        http://iso.org/OTX/1.0.0/StateMachineProcedure ../ASAMExtensionInterface/otxIFD_StateMachineProcedure.xsd
+                        http://iso.org/OTX/1.0.0/HMI ../StandardInterface/otxIFD_HMI.xsd
+                        http://iso.org/OTX/1.0.0/Event ../StandardInterface/otxIFD_Event.xsd">
+    <procedures>
+        <procedure id="id_6d0c86b927da423cafae7020ed5cdcce" name="main" visibility="PUBLIC">
+            <realisation>
+                <parameters>
+                    <inParam id="InParameterDeclaration_c2b38dec47dc42e0a9b55ccafdfdfe1c"
+                        name="Message">
+                        <realisation>
+                            <dataType xsi:type="String" />
+                        </realisation>
+                    </inParam>
+                </parameters>
+                <flow>
+                    <action id="ConfirmDialog_c8b9980a3ec542928674fb623ae09aea"
+                        name="ConfirmDialog1">
+                        <realisation xsi:type="hmi:ConfirmDialog">
+                            <hmi:message xsi:type="StringLiteral" value="Start" />
+                        </realisation>
+                    </action>
+                    <action id="ProcedureCall_69433260fd1d4f74bbd9d2f5671fb73b" name="StateMachine1">
+                        <realisation xsi:type="ProcedureCall" procedure="StateMachineProcedure1">
+                            <arguments>
+                                <inArg param="Message">
+                                    <term xsi:type="StringLiteral" value="Hello World" />
+                                </inArg>
+                            </arguments>
+                        </realisation>
+                    </action>
+                    <action id="Action_baf31596e6794e41ab41ce582982f02f" name="ConfirmDialog2">
+                        <realisation xsi:type="hmi:ConfirmDialog">
+                            <hmi:message xsi:type="StringLiteral" value="Stop" />
+                        </realisation>
+                    </action>
+                </flow>
+            </realisation>
+        </procedure>
+        <procedure xsi:type="smp:StateMachineProcedure"
+            id="Procedure_8121979bd2ab413191728495b00c0c40" name="StateMachineProcedure1"
+            visibility="PUBLIC">
+            <specification>This is a new state machine procedure</specification>
+            <smp:realisation initialState="MyInitialState" completedState="MyCompletedState">
+                <smp:parameters>
+                    <inParam id="InParameterDeclaration_c2b38dec47dc42e0a9b55ccafdfdfe1c"
+                        name="Message">
+                        <realisation>
+                            <dataType xsi:type="String" />
+                        </realisation>
+                    </inParam>
+                </smp:parameters>
+                <smp:declarations>
+                    <variable id="Variable_baf31596e6794e41ab41ce582982f020" name="MyVariable1">
+                        <realisation>
+                            <dataType xsi:type="String" />
+                        </realisation>
+                    </variable>
+                </smp:declarations>
+                <smp:states>
+                    <smp:state id="State_baf31596e6794e41ab41ce582982f02d" name="MyInitialState">
+                        <smp:entryFlow>
+                            <action id="ConfirmDialog_c8b9980a3ec542928674fb623ae09ad2"
+                                name="ConfirmDialog1">
+                                <realisation xsi:type="hmi:ConfirmDialog">
+                                    <hmi:message xsi:type="StringLiteral" value="Start State" />
+                                </realisation>
+                            </action>
+                        </smp:entryFlow>
+                        <smp:triggers>
+                            <smp:trigger id="Trigger_baf31596e6794e41ab41ce582982f0f5"
+                                name="MyTrigger1">
+                                <smp:source xsi:type="event:TimerExpiredEventSource">
+                                    <event:timeout xsi:type="IntegerLiteral" value="1000" />
+                                </smp:source>
+                            </smp:trigger>
+                            <smp:trigger id="Trigger_baf31596e6794e41ab41ce582982f0f6"
+                                name="MyTrigger2">
+                                <smp:source xsi:type="event:TimerExpiredEventSource">
+                                    <event:timeout xsi:type="IntegerLiteral" value="1000" />
+                                </smp:source>
+                            </smp:trigger>
+                        </smp:triggers>
+                        <smp:transitions>
+                            <smp:transition id="Transition_fd436028137e43488447e1a0b2896565"
+                                name="MyTransition1" target="MyCompletedState">
+                                <smp:triggerRefs>
+                                    <smp:triggerRef target="MyTrigger1" />
+                                </smp:triggerRefs>
+                                <smp:flow>
+                                    <action id="ConfirmDialog_2bd4a64b6db94bbc9bedf5e6f01503f7"
+                                        name="ConfirmDialog1">
+                                        <realisation xsi:type="hmi:ConfirmDialog">
+                                            <hmi:message xsi:type="StringValue" valueOf="Message" />
+                                        </realisation>
+                                    </action>
+                                </smp:flow>
+                            </smp:transition>
+                        </smp:transitions>
+                        <smp:exitFlow>
+                            <action id="ConfirmDialog_c8b9980a3ec542928674fb623ae09ad5"
+                                name="ConfirmDialog1">
+                                <realisation xsi:type="hmi:ConfirmDialog">
+                                    <hmi:message xsi:type="StringLiteral" value="Exit State" />
+                                </realisation>
+                            </action>
+                        </smp:exitFlow>
+                    </smp:state>
+                    <smp:state id="State_baf31596e6794e41ab41ce582982f023" name="MyCompletedState">
+                        <smp:entryFlow>
+                            <action id="ConfirmDialog_9e22079d28744d37bc6a03044eaf5378"
+                                name="ConfirmDialog3">
+                                <realisation xsi:type="hmi:ConfirmDialog">
+                                    <hmi:message xsi:type="StringLiteral" value="Completed" />
+                                </realisation>
+                            </action>
+                        </smp:entryFlow>
+                    </smp:state>
+                </smp:states>
+            </smp:realisation>
+        </procedure>
+    </procedures>
+</otx>
