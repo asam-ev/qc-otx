@@ -1,7 +1,15 @@
 from lxml import etree
-from typing import Union, List
-from qc_otx.checks.models import QueueNode, AttributeInfo
+from typing import Union, List, Dict
+from qc_otx.checks.models import (
+    QueueNode,
+    AttributeInfo,
+    SMState,
+    SMTransition,
+    SMTrigger,
+    StateMachine,
+)
 import re
+import logging
 
 
 def get_data_model_version(root: etree._Element):
@@ -94,3 +102,91 @@ def compare_versions(version1: str, version2: str) -> int:
         return 1
     else:
         return 0
+
+
+def get_state_machine(input_node: etree._Element, nsmap: Dict) -> StateMachine:
+
+    smp_id = input_node.get("id")
+    smp_name = input_node.get("name")
+
+    smp_realisation = input_node.xpath("./smp:realisation", namespaces=nsmap)
+    logging.debug(f"smp_realisation: {smp_realisation}")
+
+    if smp_realisation is None or len(smp_realisation) != 1:
+        logging.error(
+            f"Invalid realisation found in current state machine procedure named {smp_name} with id {smp_id}"
+        )
+        return
+
+    smp_realisation = smp_realisation[0]
+    initial_state_name = smp_realisation.get("initialState")
+    completed_state_name = smp_realisation.get("completedState")
+    logging.debug(f"initial_state_name: {initial_state_name}")
+    logging.debug(f"completed_state_name: {completed_state_name}")
+
+    smp_states = smp_realisation.xpath("./smp:states/smp:state", namespaces=nsmap)
+
+    logging.debug(f"smp_states: {smp_states}")
+
+    sm_state_list = []
+
+    for smp_state in smp_states:
+        state_name = smp_state.get("name")
+        state_id = smp_state.get("id")
+        is_initial = state_name == initial_state_name
+        is_completed = state_name == completed_state_name
+
+        state_transitions = smp_state.xpath(
+            "./smp:transitions/smp:transition", namespaces=nsmap
+        )
+        transitions = []
+        for state_transition in state_transitions:
+            current_id = state_transition.get("id")
+            current_name = state_transition.get("name")
+            current_target = state_transition.get("target")
+            transitions.append(
+                SMTransition(current_id, current_name, current_target, state_transition)
+            )
+
+        target_state_ids = []
+
+        for transition in transitions:
+            if transition.target is not None:
+                target_state_ids.append(transition.id)
+
+        logging.debug(f"transitions: {transitions}")
+
+        state_triggers = smp_state.xpath("./smp:triggers/smp:trigger", namespaces=nsmap)
+        logging.debug(f"state_triggers: {state_triggers}")
+
+        triggers = []
+        for state_trigger in state_triggers:
+            logging.debug(f"state_trigger: {state_trigger}")
+            current_id = state_trigger.get("id")
+            current_name = state_trigger.get("name")
+            triggers.append(SMTrigger(current_id, current_name, state_trigger))
+
+        current_sm_state = SMState(
+            state_id,
+            state_name,
+            is_initial,
+            is_completed,
+            transitions,
+            target_state_ids,
+            triggers,
+            smp_state,
+        )
+
+        sm_state_list.append(current_sm_state)
+
+    state_machine_object = StateMachine(smp_id, smp_name, sm_state_list, input_node)
+
+    return state_machine_object
+
+
+def get_state_machine_procedures(tree: etree._ElementTree, nsmap: Dict) -> List:
+    return tree.xpath("//*[@xsi:type='smp:StateMachineProcedure']", namespaces=nsmap)
+
+
+def get_namespace_map(root: etree._Element) -> Dict:
+    return {k: v for k, v in root.nsmap.items() if k is not None}

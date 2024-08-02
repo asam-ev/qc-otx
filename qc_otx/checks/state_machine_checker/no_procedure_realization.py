@@ -3,11 +3,9 @@ import logging
 from qc_baselib import IssueSeverity
 
 from qc_otx import constants
-from qc_otx.checks import models
+from qc_otx.checks import models, utils
 
 from qc_otx.checks.state_machine_checker import state_machine_constants
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -38,7 +36,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
-    nsmap = {k: v for k, v in root.nsmap.items() if k is not None}
+    nsmap = utils.get_namespace_map(root)
 
     if "smp" not in nsmap:
         logging.error(
@@ -46,9 +44,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         )
         return
 
-    state_machine_procedures = tree.xpath(
-        "//*[@xsi:type='smp:StateMachineProcedure']", namespaces=nsmap
-    )
+    state_machine_procedures = utils.get_state_machine_procedures(tree, nsmap)
 
     if state_machine_procedures is None:
         return
