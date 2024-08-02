@@ -50,6 +50,8 @@
             id="Procedure_8121979bd2ab413191728495b00c0c40" name="StateMachineProcedure1"
             visibility="PUBLIC">
             <specification>This is a new state machine procedure</specification>
+            <!-- Inserted rule violation here as initialState and completedState cannot be
+            distinguised-->
             <smp:realisation initialState="MyInitialState" completedState="MyInitialState">
                 <smp:parameters>
                     <inParam id="InParameterDeclaration_c2b38dec47dc42e0a9b55ccafdfdfe1c"
