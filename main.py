@@ -7,7 +7,6 @@ from qc_baselib import Configuration, Result
 from qc_otx import constants
 from qc_otx.checks.core_checker import core_checker
 from qc_otx.checks.data_type_checker import data_type_checker
-from qc_otx.checks.zip_file_checker import zip_file_checker
 from qc_otx.checks.state_machine_checker import state_machine_checker
 from qc_otx.checks import utils, models
 
@@ -62,9 +61,6 @@ def main():
 
         # 2. Run data type checks
         data_type_checker.run_checks(checker_data)
-
-        # 3. Run zip file checks
-        zip_file_checker.run_checks(checker_data)
 
         # 4. Run state machine checks
         state_machine_checker.run_checks(checker_data)
