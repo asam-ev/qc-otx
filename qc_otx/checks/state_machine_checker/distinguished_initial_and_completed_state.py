@@ -12,7 +12,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     Rule ID: asam.net:otx:1.0.0:state_machine.chk_006.distinguished_initial_and_completed_state
 
-    Description: Each state except the completed state shall have a target state.
+    Description: The values of the mandatory initialState and optional completedState attributes shall be distinguished.
     Severity: ERROR
 
     Version range: [1.0.0, )
