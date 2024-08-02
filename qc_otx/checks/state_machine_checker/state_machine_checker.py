@@ -11,6 +11,9 @@ from qc_otx.checks.state_machine_checker import (
     state_machine_constants,
     no_procedure_realization,
     mandatory_target_state,
+    no_target_state_for_completed_state,
+    mandatory_transition,
+    mandatory_trigger,
 )
 
 
@@ -27,6 +30,9 @@ def run_checks(checker_data: models.CheckerData) -> None:
     rule_list = [
         no_procedure_realization.check_rule,  # Chk001
         mandatory_target_state.check_rule,  # Chk002
+        no_target_state_for_completed_state.check_rule,  # Chk003
+        mandatory_transition.check_rule,  # Chk004
+        mandatory_trigger.check_rule,  # Chk005
     ]
 
     for rule in rule_list:
