@@ -1,0 +1,93 @@
+﻿<otx name="ZipHandlingExample" id="zip_example_otx" version="1.0.0" timestamp="2016-04-19T12:58:48.709+01:00" package="Examples"
+     xmlns:otx="http://iso.org/OTX/1.0.0"
+     xmlns="http://iso.org/OTX/1.0.0"
+     xmlns:zip="http://iso.org/OTX/1.0.0/ZipHandling"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://iso.org/OTX/1.0.0 ../Core/otx.xsd
+                         http://iso.org/OTX/1.0.0/ZipHandling ../ASAMExtensionInterface/otxIFD_ZipHandling.xsd">
+	<specification>This document contains four example procedures, using the ZipFile / UnZipFile ActionRealisations. The examples are very simple, assuming the presence of files at the given source locations. Additional examples could be added here too.
+	</specification>
+	<procedures>
+		<procedure id="zip_file_example_1" name="zipExample1" visibility="PUBLIC">
+			<specification>Zip all files in "./source/files" unconditionally and store them in "./files.zip"
+			</specification>
+			<realisation>
+				<flow>
+					<action id="zip_file" name="zipFile">
+						<realisation xsi:type="zip:ZipFile">
+							<zip:source xsi:type="StringLiteral" value="source/files">
+							</zip:source>
+							<zip:target xsi:type="StringLiteral" value="files.zip">
+							</zip:target>
+						</realisation>
+					</action>
+				</flow>
+			</realisation>
+		</procedure>
+		<procedure id="zip_file_example_2" name="zipExample2" visibility="PUBLIC">
+			<specification>Uncompress all files contained in "files.zip" unconditionally into the folder "source".
+			</specification>
+			<realisation>
+				<flow>
+					<action id="unzip_file" name="unzipFile">
+						<realisation xsi:type="zip:UnZipFile">
+							<zip:source xsi:type="StringLiteral" value="files.zip">
+							</zip:source>
+							<zip:target xsi:type="StringLiteral" value="source">
+							</zip:target>
+						</realisation>
+					</action>
+				</flow>
+			</realisation>
+		</procedure>
+		<procedure id="zip_file_example_3" name="zipExample3" visibility="PUBLIC">
+			<specification>Zip all log files (ending with '.log' oder similar to '.log_1', '.log_20' and so on) and store them in the "log.zip" file.
+			</specification>
+			<realisation>
+				<flow>
+					<action id="zip_log_files" name="zipLogFiles">
+						<realisation xsi:type="zip:ZipFile">
+							<zip:source xsi:type="StringLiteral" value="source/files">
+							</zip:source>
+							<zip:target xsi:type="StringLiteral" value="logs.zip">
+							</zip:target>
+							<zip:extensions xsi:type="ListLiteral">
+								<itemType xsi:type="String"></itemType>
+								<items>
+									<item xsi:type="StringLiteral" value="log"></item>
+									<item xsi:type="StringLiteral" value="log_*"></item>
+								</items>
+							</zip:extensions>
+							<zip:append xsi:type="BooleanLiteral" value="true"></zip:append>
+							<zip:override xsi:type="BooleanLiteral" value="false"></zip:override>
+						</realisation>
+					</action>
+				</flow>
+			</realisation>
+		</procedure>
+		<procedure id="zip_file_example_4" name="zipExample4" visibility="PUBLIC">
+			<specification>Uncompresses only a catalog.xml file from the root of the given zip container. Within this container, additional information can be found, describing the contents of the zip file. It is expected in this example, that there is only one .xml file (which is the catalog) contained in the zip.
+
+This example shows, that it might be useful to be able to control whether the (un) compression of zip containers should happen recursively or not.
+			</specification>
+			<realisation>
+				<flow>
+					<action id="unzip_catalog_file" name="unzipCatalogFile">
+						<realisation xsi:type="zip:UnZipFile">
+							<zip:source xsi:type="StringLiteral" value="myContainer.ending">
+							</zip:source>
+							<zip:target xsi:type="StringLiteral" value="myContainer">
+							</zip:target>
+							<zip:extensions xsi:type="ListLiteral">
+								<itemType xsi:type="Double"></itemType>
+								<items>
+									<item xsi:type="StringLiteral" value="xml"></item>
+								</items>
+							</zip:extensions>
+						</realisation>
+					</action>
+				</flow>
+			</realisation>
+		</procedure>
+	</procedures>
+</otx>
