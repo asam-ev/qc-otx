@@ -72,7 +72,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 not sm_state.is_completed and len(sm_state.target_state_ids) == 0
             )
             if has_issue:
-                current_xpath = tree.getpath(sm_state.xml_element)
+                current_xpath = tree.getelementpath(sm_state.xml_element)
                 issue_id = checker_data.result.register_issue(
                     checker_bundle_name=constants.BUNDLE_NAME,
                     checker_id=state_machine_constants.CHECKER_ID,
