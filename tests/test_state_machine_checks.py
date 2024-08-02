@@ -277,7 +277,7 @@ def test_chk006_positive(
     test_utils.cleanup_files()
 
 
-def test_chk005_positive_no_completed(
+def test_chk006_positive_no_completed(
     monkeypatch,
 ) -> None:
     base_path = "tests/data/StateMachine_Chk006/"
