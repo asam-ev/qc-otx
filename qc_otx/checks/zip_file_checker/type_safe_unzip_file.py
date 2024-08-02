@@ -76,7 +76,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
             has_issue = string_type_num == 0
             if has_issue:
-                current_xpath = tree.getpath(current_list)
+                current_xpath = tree.getelementpath(current_list)
                 issue_id = checker_data.result.register_issue(
                     checker_bundle_name=constants.BUNDLE_NAME,
                     checker_id=zip_file_constants.CHECKER_ID,

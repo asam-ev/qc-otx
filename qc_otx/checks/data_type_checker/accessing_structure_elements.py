@@ -91,7 +91,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         has_issue = current_value not in signature_dict[current_variable_type]
 
         if has_issue:
-            current_xpath = tree.getpath(step_by_name_node)
+            current_xpath = tree.getelementpath(step_by_name_node)
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=data_type_constants.CHECKER_ID,
