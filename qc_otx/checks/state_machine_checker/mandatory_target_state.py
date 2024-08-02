@@ -35,8 +35,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     )
 
     tree = checker_data.input_file_xml_root
-    root = tree.getroot()
-    nsmap = utils.get_namespace_map(root)
+    nsmap = utils.get_namespace_map(tree)
 
     if "smp" not in nsmap:
         logging.error(
@@ -78,5 +77,5 @@ def check_rule(checker_data: models.CheckerData) -> None:
                     checker_id=state_machine_constants.CHECKER_ID,
                     issue_id=issue_id,
                     xpath=current_xpath,
-                    description=f"State {sm_state.name} wiht id {sm_state.id} does not have any target state",
+                    description=f"State {sm_state.name} with id {sm_state.id} does not have any target state",
                 )

@@ -1,13 +1,6 @@
 from lxml import etree
 from typing import Union, List, Dict
-from qc_otx.checks.models import (
-    QueueNode,
-    AttributeInfo,
-    SMState,
-    SMTransition,
-    SMTrigger,
-    StateMachine,
-)
+from qc_otx.checks import models
 import re
 import logging
 
@@ -33,7 +26,7 @@ def get_data_model_version(root: etree._Element):
 
 def get_all_attributes(
     tree: etree._ElementTree, root: etree._Element
-) -> List[AttributeInfo]:
+) -> List[models.AttributeInfo]:
     """Function to get all attributes in input xml document
 
     Args:
@@ -45,7 +38,7 @@ def get_all_attributes(
     """
     attributes = []
     stack = [
-        QueueNode(root, tree.getpath(root))
+        models.QueueNode(root, tree.getpath(root))
     ]  # Initialize stack with the root element
 
     while stack:
@@ -55,12 +48,15 @@ def get_all_attributes(
 
         # Process attributes of the current element
         for attr, value in current_element.attrib.items():
-            attributes.append(AttributeInfo(attr, value, current_xpath))
+            attributes.append(models.AttributeInfo(attr, value, current_xpath))
 
         # Push children to the stack for further processing
         stack.extend(
             reversed(
-                [QueueNode(x, tree.getpath(x)) for x in current_element.getchildren()]
+                [
+                    models.QueueNode(x, tree.getpath(x))
+                    for x in current_element.getchildren()
+                ]
             )
         )
 
@@ -104,7 +100,7 @@ def compare_versions(version1: str, version2: str) -> int:
         return 0
 
 
-def get_state_machine(input_node: etree._Element, nsmap: Dict) -> StateMachine:
+def get_state_machine(input_node: etree._Element, nsmap: Dict) -> models.StateMachine:
 
     smp_id = input_node.get("id")
     smp_name = input_node.get("name")
@@ -145,7 +141,9 @@ def get_state_machine(input_node: etree._Element, nsmap: Dict) -> StateMachine:
             current_name = state_transition.get("name")
             current_target = state_transition.get("target")
             transitions.append(
-                SMTransition(current_id, current_name, current_target, state_transition)
+                models.SMTransition(
+                    current_id, current_name, current_target, state_transition
+                )
             )
 
         target_state_ids = []
@@ -164,9 +162,9 @@ def get_state_machine(input_node: etree._Element, nsmap: Dict) -> StateMachine:
             logging.debug(f"state_trigger: {state_trigger}")
             current_id = state_trigger.get("id")
             current_name = state_trigger.get("name")
-            triggers.append(SMTrigger(current_id, current_name, state_trigger))
+            triggers.append(models.SMTrigger(current_id, current_name, state_trigger))
 
-        current_sm_state = SMState(
+        current_sm_state = models.SMState(
             state_id,
             state_name,
             is_initial,
@@ -179,7 +177,9 @@ def get_state_machine(input_node: etree._Element, nsmap: Dict) -> StateMachine:
 
         sm_state_list.append(current_sm_state)
 
-    state_machine_object = StateMachine(smp_id, smp_name, sm_state_list, input_node)
+    state_machine_object = models.StateMachine(
+        smp_id, smp_name, sm_state_list, input_node
+    )
 
     return state_machine_object
 
@@ -188,5 +188,6 @@ def get_state_machine_procedures(tree: etree._ElementTree, nsmap: Dict) -> List:
     return tree.xpath("//*[@xsi:type='smp:StateMachineProcedure']", namespaces=nsmap)
 
 
-def get_namespace_map(root: etree._Element) -> Dict:
+def get_namespace_map(tree: etree._ElementTree) -> Dict:
+    root = tree.getroot()
     return {k: v for k, v in root.nsmap.items() if k is not None}

@@ -35,9 +35,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     )
 
     tree = checker_data.input_file_xml_root
-    root = tree.getroot()
-    nsmap = utils.get_namespace_map(root)
-
+    nsmap = utils.get_namespace_map(tree)
     if "smp" not in nsmap:
         logging.error(
             'No state machine procedure prefix "smp" found in document namespaces. Abort state machine procedure checks...'
@@ -45,7 +43,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
         return
 
     state_machine_procedures = utils.get_state_machine_procedures(tree, nsmap)
-
     if state_machine_procedures is None:
         return
 
