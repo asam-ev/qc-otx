@@ -8,6 +8,7 @@ from qc_otx import constants
 from qc_otx.checks.core_checker import core_checker
 from qc_otx.checks.data_type_checker import data_type_checker
 from qc_otx.checks.zip_file_checker import zip_file_checker
+from qc_otx.checks.state_machine_checker import state_machine_checker
 from qc_otx.checks import utils, models
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
@@ -64,6 +65,9 @@ def main():
 
         # 3. Run zip file checks
         zip_file_checker.run_checks(checker_data)
+
+        # 4. Run state machine checks
+        state_machine_checker.run_checks(checker_data)
 
         result.write_to_file(
             config.get_checker_bundle_param(
