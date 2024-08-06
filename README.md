@@ -1,6 +1,7 @@
 # qc-otx
 
-This project implements the [Open Test sequence eXchange (OTX)](https://report.asam.net/otx-iso-13209-open-test-sequence-exchange-format) Checker for the ASAM Quality Checker project.
+The ASAM Quality Checker OTX library contains a short representative list of check examples for [Open Test sequence eXchange (OTX)](https://report.asam.net/otx-iso-13209-open-test-sequence-exchange-format)
+to showcase the functionality and implementation (it shall not be a reference implementation) for the ASAM Quality Checker project. 
 
 ## Installation
 
