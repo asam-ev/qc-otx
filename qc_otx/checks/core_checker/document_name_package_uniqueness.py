@@ -77,7 +77,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         return
 
     document_package_dot_name = package_name + "." + document_name
-    input_file_path = checker_data.config.get_config_param("OtxFile")
+    input_file_path = checker_data.config.get_config_param("InputFile")
 
     # Store previous working directory and move to config path dir for relative package paths
     previous_wd = os.getcwd()
