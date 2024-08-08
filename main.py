@@ -4,6 +4,7 @@ from datetime import datetime
 from lxml import etree
 
 from qc_baselib import Configuration, Result
+from qc_baselib.models.common import ParamType
 from qc_otx import constants
 from qc_otx.checks.core_checker import core_checker
 from qc_otx.checks.data_type_checker import data_type_checker
@@ -48,7 +49,13 @@ def main():
         )
         result.set_result_version(version=constants.BUNDLE_VERSION)
 
-        root = etree.parse(config.get_config_param("OtxFile"))
+        input_file_path = config.get_config_param("InputFile")
+        input_param = ParamType(name="InputFile", value=input_file_path)
+        result.get_checker_bundle_result(constants.BUNDLE_NAME).params.append(
+            input_param
+        )
+
+        root = etree.parse(config.get_config_param("InputFile"))
         otx_schema_version = utils.get_standard_schema_version(root)
 
         checker_data = models.CheckerData(
