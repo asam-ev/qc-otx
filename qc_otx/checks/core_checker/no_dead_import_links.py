@@ -33,7 +33,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
-    input_file_path = checker_data.config.get_config_param("OtxFile")
+    input_file_path = checker_data.config.get_config_param("InputFile")
 
     import_nodes = root.findall(".//import", namespaces=root.nsmap)
 

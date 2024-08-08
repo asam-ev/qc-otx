@@ -43,7 +43,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         return
 
     document_name = root_attrib["name"]
-    config_file_path = checker_data.config.get_config_param("OtxFile")
+    config_file_path = checker_data.config.get_config_param("InputFile")
     filename = Path(config_file_path).stem
 
     is_valid = document_name == filename
