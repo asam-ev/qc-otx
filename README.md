@@ -4,7 +4,14 @@ This project implements the [Open Test sequence eXchange (OTX)](https://report.a
 
 ## Installation
 
+There are two options of usage of the project:
+
+1. Default python on the machine
+2. [Poetry](https://python-poetry.org/)
+
 To install the project, run:
+
+**Default python**
 
 ```
 pip install -r requirements.txt
@@ -12,12 +19,32 @@ pip install -r requirements.txt
 
 This will install the needed dependencies to your local Python.
 
+**Poetry**
+
+```
+poetry install
+```
+
 ## Usage
 
 The checker can be used as a Python script:
 
+**Default python**
+
 ```
 python main.py --help
+usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
+This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
+options:
+  -h, --help            show this help message and exit
+  -d, --default_config
+  -c CONFIG_PATH, --config_path CONFIG_PATH
+```
+
+**Poetry**
+
+```
+poetry run python main.py --help
 usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
 This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
 options:
@@ -37,16 +64,32 @@ options:
 To run the tests, you need to have installed the main dependencies mentioned
 at [Installation](#installation).
 
-Install Python tests and development dependencies:
+**Install Python tests and development dependencies:**
+
+**Default python**
 
 ```
 pip install -r requirements-tests.txt
 ```
 
-Execute tests:
+**Poetry**
+
+```
+poetry install --with dev
+```
+
+**Execute tests:**
+
+**Default python**
 
 ```
 python -m pytest -vv
+```
+
+**Poetry**
+
+```
+poetry run pytest -vv
 ```
 
 They should output something similar to:
