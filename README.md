@@ -33,7 +33,9 @@ The checker can be used as a Python script:
 **Default python**
 
 ```
-python main.py --help
+// python qc_otx/main.py --help
+// python -m qc_otx.main --help
+qc_otx --help
 usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
 This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
 options:
@@ -45,7 +47,7 @@ options:
 **Poetry**
 
 ```
-poetry run python main.py --help
+poetry run qc_otx --help
 usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
 This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
 options:
