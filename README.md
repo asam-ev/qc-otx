@@ -4,8 +4,6 @@ This project implements the [Open Test sequence eXchange (OTX)](https://report.a
 
 ## Installation
 
-## Installation
-
 There are two options of usage of the project:
 
 1. Default python on the machine
