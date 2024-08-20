@@ -1,41 +1,27 @@
-# qc-otx
+# asam-qc-otx
 
 This project implements the [OTX Checker](checker_bundle_doc.md) for the ASAM Quality Checker project.
 
 OTX stands for [Open Test sequence eXchange](https://report.asam.net/otx-iso-13209-open-test-sequence-exchange-format).
 
-## Installation
+## Installation and usage
 
-There are two options of usage of the project:
+asam-qc-otx can be installed using pip or from source.
 
-1. Default python on the machine
-2. [Poetry](https://python-poetry.org/)
+### Installation using pip
 
-To install the project, run:
+asam-qc-otx can be installed using pip.
 
-**Default python**
-
-```
-pip install -r requirements.txt
+```bash
+pip install asam-qc-otx@git+https://github.com/asam-ev/qc-otx@main
 ```
 
-This will install the needed dependencies to your local Python.
+**Note**: To install from different sources, you can replace `@main` with
+your desired target. For example, `develop` branch as `@develop`.
 
-**Poetry**
+To run the application:
 
-```
-poetry install
-```
-
-## Usage
-
-The checker can be used as a Python script:
-
-**Default python**
-
-```
-// python qc_otx/main.py --help
-// python -m qc_otx.main --help
+```bash
 qc_otx --help
 usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
 This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
@@ -45,54 +31,68 @@ options:
   -c CONFIG_PATH, --config_path CONFIG_PATH
 ```
 
-**Poetry**
+The following commands are equivalent:
 
-```
-poetry run qc_otx --help
-usage: QC OTX Checker [-h] (-d | -c CONFIG_PATH)
-This is a collection of scripts for checking validity of Open Test sequence eXchange format (.otx) files.
-options:
-  -h, --help            show this help message and exit
-  -d, --default_config
-  -c CONFIG_PATH, --config_path CONFIG_PATH
+```bash
+qc_otx --help
+python qc_otx/main.py --help
+python -m qc_otx.main --help
 ```
 
-### Example
+### Installation from source
 
-- No issues found
+After cloning the repository, there are two options to install from source.
 
-- Issues found on file
+1. Default Python on the machine
+2. [Poetry](https://python-poetry.org/)
+
+#### Default Python
+
+```bash
+pip install -r requirements.txt
+```
+
+This will install the needed dependencies to your local Python.
+
+#### Poetry
+
+```bash
+poetry install
+```
+
+After installing from source, the usage are similar to above.
+
+```bash
+qc_otx --help
+python qc_otx/main.py --help
+python -m qc_otx.main --help
+```
 
 ## Tests
 
-To run the tests, you need to have installed the main dependencies mentioned
-at [Installation](#installation).
+To run the tests, you need to install the extra test dependency after installing from source.
 
-**Install Python tests and development dependencies:**
+### Install using pip
 
-**Default python**
-
-```
+```bash
 pip install -r requirements-tests.txt
 ```
 
-**Poetry**
+### Install using poetry
 
-```
+```bash
 poetry install --with dev
 ```
 
-**Execute tests:**
+### Execute tests
 
-**Default python**
-
-```
+```bash
 python -m pytest -vv
 ```
 
-**Poetry**
+or
 
-```
+```bash
 poetry run pytest -vv
 ```
 
@@ -110,8 +110,14 @@ You can check more options for pytest at its [own documentation](https://docs.py
 For contributing, you need to install the development requirements besides the
 test and installation requirements, for that run:
 
-```
+```bash
 pip install -r requirements-dev.txt
+```
+
+or
+
+```bash
+poetry install --with dev
 ```
 
 You need to have pre-commit installed and install the hooks:
