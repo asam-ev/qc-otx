@@ -5,6 +5,21 @@ This project implements the [ASAM Quality Checker OTX library](checker_bundle_do
 The ASAM Quality Checker OTX library contains a short representative list of check examples for [Open Test sequence eXchange (OTX)](https://report.asam.net/otx-iso-13209-open-test-sequence-exchange-format)
 to showcase the functionality and implementation (it shall not be a reference implementation) for the ASAM Quality Checker project. 
 
+- [asam-qc-otx](#asam-qc-otx)
+  - [Installation and usage](#installation-and-usage)
+    - [Installation using pip](#installation-using-pip)
+    - [Installation from source](#installation-from-source)
+      - [Default Python](#default-python)
+      - [Poetry](#poetry)
+  - [Register Checker Bundle to ASAM Quality Checker Framework](#register-checker-bundle-to-asam-quality-checker-framework)
+    - [Linux Manifest Template](#linux-manifest-template)
+  - [Tests](#tests)
+    - [Install using pip](#install-using-pip)
+    - [Install using poetry](#install-using-poetry)
+    - [Execute tests](#execute-tests)
+  - [Contributing](#contributing)
+
+
 ## Installation and usage
 
 asam-qc-otx can be installed using pip or from source.
@@ -68,6 +83,14 @@ qc_otx --help
 python qc_otx/main.py --help
 python -m qc_otx.main --help
 ```
+
+## Register Checker Bundle to ASAM Quality Checker Framework
+
+Manifest file templates are provided in the [manifest_templates](manifest_templates/) folder to register the ASAM OpenDrive Checker Bundle with the [ASAM Quality Checker Framework](https://github.com/asam-ev/qc-framework/tree/main).
+
+### Linux Manifest Template
+
+To register this Checker Bundle in Linux, use the [linux_manifest.json](manifest_templates/linux_manifest.json) template file. Replace the path to the Python executable `/home/user/.venv/bin/python` in the `exec_command` with the path to the Python executable where the Checker Bundle is installed.
 
 ## Tests
 
