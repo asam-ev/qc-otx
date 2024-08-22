@@ -4,9 +4,12 @@ from datetime import datetime
 from lxml import etree
 
 from qc_baselib import Configuration, Result
+from qc_baselib.models.common import ParamType
 from qc_otx import constants
 from qc_otx.checks.core_checker import core_checker
 from qc_otx.checks.data_type_checker import data_type_checker
+from qc_otx.checks.zip_file_checker import zip_file_checker
+from qc_otx.checks.state_machine_checker import state_machine_checker
 from qc_otx.checks import utils, models
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
@@ -21,6 +24,8 @@ def args_entrypoint() -> argparse.Namespace:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-d", "--default_config", action="store_true")
     group.add_argument("-c", "--config_path")
+
+    parser.add_argument("-g", "--generate_markdown", action="store_true")
 
     return parser.parse_args()
 
@@ -46,7 +51,13 @@ def main():
         )
         result.set_result_version(version=constants.BUNDLE_VERSION)
 
-        root = etree.parse(config.get_config_param("OtxFile"))
+        input_file_path = config.get_config_param("InputFile")
+        input_param = ParamType(name="InputFile", value=input_file_path)
+        result.get_checker_bundle_result(constants.BUNDLE_NAME).params.append(
+            input_param
+        )
+
+        root = etree.parse(config.get_config_param("InputFile"))
         otx_schema_version = utils.get_standard_schema_version(root)
 
         checker_data = models.CheckerData(
@@ -61,11 +72,20 @@ def main():
         # 2. Run data type checks
         data_type_checker.run_checks(checker_data)
 
+        # 3. Run zip file checks
+        zip_file_checker.run_checks(checker_data)
+
+        # 4. Run state machine checks
+        state_machine_checker.run_checks(checker_data)
+
         result.write_to_file(
             config.get_checker_bundle_param(
                 checker_bundle_name=constants.BUNDLE_NAME, param_name="resultFile"
             )
         )
+
+        if args.generate_markdown:
+            result.write_markdown_doc("generated_checker_bundle_doc.md")
 
     logging.info("Done")
 

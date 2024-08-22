@@ -37,7 +37,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         rule_full_name="core.chk_006.match_of_imported_document_data_model_version",
     )
 
-    input_file_path = checker_data.config.get_config_param("OtxFile")
+    input_file_path = checker_data.config.get_config_param("InputFile")
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
 

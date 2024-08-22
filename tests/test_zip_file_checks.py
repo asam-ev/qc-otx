@@ -9,7 +9,7 @@ from qc_baselib import Result, IssueSeverity
 def test_chk001_positive(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/DataType_Chk001/"
+    base_path = "tests/data/ZipFile_Chk001/"
     target_file_name = f"positive.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
@@ -23,7 +23,7 @@ def test_chk001_positive(
     assert (
         len(
             result.get_issues_by_rule_uid(
-                "asam.net:otx:1.0.0:data_type.chk_001.accessing_structure_elements"
+                "asam.net:otx:1.0.0:zip_file.chk_001.type_safe_unzip_file"
             )
         )
         == 0
@@ -35,7 +35,7 @@ def test_chk001_positive(
 def test_chk001_negative(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/DataType_Chk001/"
+    base_path = "tests/data/ZipFile_Chk001/"
     target_file_name = f"negative.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
@@ -46,19 +46,19 @@ def test_chk001_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
-    data_type_issues = result.get_issues_by_rule_uid(
-        "asam.net:otx:1.0.0:data_type.chk_001.accessing_structure_elements"
+    zip_file_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:zip_file.chk_001.type_safe_unzip_file"
     )
-    assert len(data_type_issues) == 1
-    assert data_type_issues[0].level == IssueSeverity.ERROR
+    assert len(zip_file_issues) == 1
+    assert zip_file_issues[0].level == IssueSeverity.ERROR
 
     test_utils.cleanup_files()
 
 
-def test_chk008_positive(
+def test_chk002_positive(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/DataType_Chk008/"
+    base_path = "tests/data/ZipFile_Chk002/"
     target_file_name = f"positive.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
@@ -72,7 +72,7 @@ def test_chk008_positive(
     assert (
         len(
             result.get_issues_by_rule_uid(
-                "asam.net:otx:1.0.0:data_type.chk_008.correct_target_for_structure_element"
+                "asam.net:otx:1.0.0:zip_file.chk_002.type_safe_zip_file"
             )
         )
         == 0
@@ -81,10 +81,10 @@ def test_chk008_positive(
     test_utils.cleanup_files()
 
 
-def test_chk008_negative(
+def test_chk002_negative(
     monkeypatch,
 ) -> None:
-    base_path = "tests/data/DataType_Chk008/"
+    base_path = "tests/data/ZipFile_Chk002/"
     target_file_name = f"negative.otx"
     target_file_path = os.path.join(base_path, target_file_name)
 
@@ -95,13 +95,10 @@ def test_chk008_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
-    data_type_issues = result.get_issues_by_rule_uid(
-        "asam.net:otx:1.0.0:data_type.chk_008.correct_target_for_structure_element"
+    zip_file_issues = result.get_issues_by_rule_uid(
+        "asam.net:otx:1.0.0:zip_file.chk_002.type_safe_zip_file"
     )
-    assert len(data_type_issues) == 2
-    assert data_type_issues[0].level == IssueSeverity.ERROR
-    assert data_type_issues[1].level == IssueSeverity.ERROR
-    assert "MainName" in data_type_issues[0].locations[0].description
-    assert "DateOfBirth" in data_type_issues[1].locations[0].description
+    assert len(zip_file_issues) == 1
+    assert zip_file_issues[0].level == IssueSeverity.ERROR
 
     test_utils.cleanup_files()
