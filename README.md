@@ -9,14 +9,9 @@ to showcase the functionality and implementation (it shall not be a reference im
   - [Installation and usage](#installation-and-usage)
     - [Installation using pip](#installation-using-pip)
     - [Installation from source](#installation-from-source)
-      - [Default Python](#default-python)
-      - [Poetry](#poetry)
   - [Register Checker Bundle to ASAM Quality Checker Framework](#register-checker-bundle-to-asam-quality-checker-framework)
     - [Linux Manifest Template](#linux-manifest-template)
   - [Tests](#tests)
-    - [Install using pip](#install-using-pip)
-    - [Install using poetry](#install-using-poetry)
-    - [Execute tests](#execute-tests)
   - [Contributing](#contributing)
 
 
@@ -57,20 +52,7 @@ python -m qc_otx.main --help
 
 ### Installation from source
 
-After cloning the repository, there are two options to install from source.
-
-1. Default Python on the machine
-2. [Poetry](https://python-poetry.org/)
-
-#### Default Python
-
-```bash
-pip install -r requirements.txt
-```
-
-This will install the needed dependencies to your local Python.
-
-#### Poetry
+After cloning the repository, the project can be installed using [Poetry](https://python-poetry.org/).
 
 ```bash
 poetry install
@@ -96,19 +78,11 @@ To register this Checker Bundle in Linux, use the [linux_manifest.json](manifest
 
 To run the tests, you need to install the extra test dependency after installing from source.
 
-### Install using pip
-
-```bash
-pip install -r requirements-tests.txt
-```
-
-### Install using poetry
-
 ```bash
 poetry install --with dev
 ```
 
-### Execute tests
+To execute tests:
 
 ```bash
 python -m pytest -vv
@@ -133,12 +107,6 @@ You can check more options for pytest at its [own documentation](https://docs.py
 
 For contributing, you need to install the development requirements besides the
 test and installation requirements, for that run:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-or
 
 ```bash
 poetry install --with dev
