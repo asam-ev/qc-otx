@@ -12,6 +12,7 @@ to showcase the functionality and implementation (it shall not be a reference im
   - [Register Checker Bundle to ASAM Quality Checker Framework](#register-checker-bundle-to-asam-quality-checker-framework)
     - [Linux Manifest Template](#linux-manifest-template)
     - [Windows Manifest Template](#windows-manifest-template)
+    - [Example Configuration File](#example-configuration-file)
   - [Tests](#tests)
   - [Contributing](#contributing)
 
@@ -94,6 +95,32 @@ If the asam-qc-otx is installed in a virtual environment, the `exec_command` nee
 ```
 
 Replace `C:\\> <venv>\\Scripts\\activate.bat` by the path to your virtual environment.
+
+### Example Configuration File
+
+An example configuration file for using this Checker Bundle within the ASAM Quality Checker Framework is as follows.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Config>
+
+    <Param name="InputFile" value="test.otx" />
+
+    <CheckerBundle application="otxBundle">
+        <Param name="resultFile" value="otx_bundle_report.xqar" />
+        <Checker checkerId="core_otx" maxLevel="1" minLevel="3" />
+        <Checker checkerId="data_type_otx" maxLevel="1" minLevel="3" />
+        <Checker checkerId="zip_file_otx" maxLevel="1" minLevel="3" />
+        <Checker checkerId="state_machine_otx" maxLevel="1" minLevel="3" />
+    </CheckerBundle>
+
+    <ReportModule application="TextReport">
+        <Param name="strInputFile" value="Result.xqar" />
+        <Param name="strReportFile" value="Report.txt" />
+    </ReportModule>
+
+</Config>
+```
 
 ## Tests
 
