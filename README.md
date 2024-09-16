@@ -1,6 +1,6 @@
 # asam-qc-otx
 
-This project implements the [OTX Checker](checker_bundle_doc.md) for the ASAM Quality Checker project.
+This project implements the [OTX Checker Bundle](checker_bundle_doc.md) for the ASAM Quality Checker project.
 
 OTX stands for [Open Test sequence eXchange](https://report.asam.net/otx-iso-13209-open-test-sequence-exchange-format).
 
@@ -28,8 +28,11 @@ asam-qc-otx can be installed using pip.
 pip install asam-qc-otx@git+https://github.com/asam-ev/qc-otx@main
 ```
 
-**Note**: To install from different sources, you can replace `@main` with
-your desired target. For example, `develop` branch as `@develop`.
+**Note:** The above command will install `asam-qc-otx` from the `main` branch. If you want to install `asam-qc-otx` from another branch or tag, replace `@main` with the desired branch or tag. It is also possible to install from a local directory.
+
+```bash
+pip install /home/user/qc-otx
+```
 
 To run the application:
 

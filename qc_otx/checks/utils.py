@@ -84,6 +84,17 @@ def compare_versions(version1: str, version2: str) -> int:
     v1_components = list(map(int, version1.split(".")))
     v2_components = list(map(int, version2.split(".")))
 
+    max_length = max(len(v1_components), len(v2_components))
+
+    # extend the length of the shorter components with zero
+    if len(v1_components) < max_length:
+        for _ in range(len(v1_components), max_length):
+            v1_components.append(0)
+
+    if len(v2_components) < max_length:
+        for _ in range(len(v2_components), max_length):
+            v2_components.append(0)
+
     # Compare each component until one is greater or they are equal
     for v1, v2 in zip(v1_components, v2_components):
         if v1 < v2:
@@ -91,13 +102,7 @@ def compare_versions(version1: str, version2: str) -> int:
         elif v1 > v2:
             return 1
 
-    # If all components are equal, compare based on length
-    if len(v1_components) < len(v2_components):
-        return -1
-    elif len(v1_components) > len(v2_components):
-        return 1
-    else:
-        return 0
+    return 0
 
 
 def get_state_machine(input_node: etree._Element, nsmap: Dict) -> models.StateMachine:
