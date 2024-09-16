@@ -1,9 +1,8 @@
 import os
 import pytest
 import test_utils
-from qc_otx import constants
-from qc_otx.checks.core_checker import core_constants
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import Result, IssueSeverity, StatusType
+from qc_otx.checks import core_checker
 
 
 def test_chk001_positive(
@@ -19,6 +18,13 @@ def test_chk001_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.document_name_matches_filename.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -46,6 +52,13 @@ def test_chk001_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.document_name_matches_filename.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_001.document_name_matches_filename"
     )
@@ -69,6 +82,13 @@ def test_chk002_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.document_name_package_uniqueness.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_002.document_name_package_uniqueness"
     )
@@ -89,6 +109,13 @@ def test_chk002_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.document_name_package_uniqueness.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_002.document_name_package_uniqueness"
@@ -113,6 +140,11 @@ def test_chk003_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.no_dead_import_links.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_003.no_dead_import_links"
     )
@@ -133,6 +165,11 @@ def test_chk003_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.no_dead_import_links.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_003.no_dead_import_links"
@@ -157,6 +194,11 @@ def test_chk004_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.no_unused_imports.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_004.no_unused_imports"
     )
@@ -177,6 +219,11 @@ def test_chk004_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.no_unused_imports.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_004.no_unused_imports"
@@ -201,6 +248,13 @@ def test_chk005_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.no_use_of_undefined_import_prefixes.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_005.no_use_of_undefined_import_prefixes"
     )
@@ -221,6 +275,13 @@ def test_chk005_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.no_use_of_undefined_import_prefixes.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_005.no_use_of_undefined_import_prefixes"
@@ -246,6 +307,13 @@ def test_chk006_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.match_of_imported_document_data_model_version.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_006.match_of_imported_document_data_model_version"
     )
@@ -266,6 +334,13 @@ def test_chk006_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.match_of_imported_document_data_model_version.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_006.match_of_imported_document_data_model_version"
@@ -291,6 +366,13 @@ def test_chk007_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
     )
@@ -311,6 +393,13 @@ def test_chk007_positive_no_specification(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
@@ -333,6 +422,13 @@ def test_chk007_positive_no_realisation(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
     )
@@ -353,6 +449,13 @@ def test_chk007_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
@@ -377,6 +480,13 @@ def test_chk007_negative_no_specification(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
     )
@@ -399,6 +509,13 @@ def test_chk007_negative_empty_string(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.have_specification_if_no_realisation_exists.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
@@ -423,6 +540,11 @@ def test_chk008_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
     )
@@ -443,6 +565,11 @@ def test_chk008_positive_two_mains(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
@@ -465,6 +592,11 @@ def test_chk008_positive_no_main(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
     )
@@ -485,6 +617,11 @@ def test_chk008_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
@@ -509,6 +646,11 @@ def test_chk008_negative_two_mains(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
     )
@@ -531,6 +673,11 @@ def test_chk008_negative_no_visibility(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.public_main_procedure.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_008.public_main_procedure"
@@ -555,6 +702,13 @@ def test_chk009_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.mandatory_constant_initialization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
     )
@@ -576,6 +730,13 @@ def test_chk009_positive_multiple(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.mandatory_constant_initialization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
     )
@@ -596,6 +757,13 @@ def test_chk009_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.mandatory_constant_initialization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
@@ -620,6 +788,13 @@ def test_chk009_negative_multiple(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            core_checker.mandatory_constant_initialization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
     )
@@ -642,6 +817,13 @@ def test_chk009_negative_multiple_errors(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            core_checker.mandatory_constant_initialization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
@@ -667,6 +849,11 @@ def test_chk010_positive(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(core_checker.unique_node_names.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_010.unique_node_names"
     )
@@ -687,6 +874,11 @@ def test_chk010_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(core_checker.unique_node_names.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     core_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:core.chk_010.unique_node_names"
