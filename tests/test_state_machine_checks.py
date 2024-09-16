@@ -1,9 +1,8 @@
 import os
 import pytest
 import test_utils
-from qc_otx import constants
-from qc_otx.checks.core_checker import core_constants
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import Result, IssueSeverity, StatusType
+from qc_otx.checks import state_machine_checker
 
 
 def test_chk001_positive(
@@ -19,6 +18,13 @@ def test_chk001_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            state_machine_checker.no_procedure_realization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -46,6 +52,13 @@ def test_chk001_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            state_machine_checker.no_procedure_realization.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_001.no_procedure_realization"
     )
@@ -68,6 +81,13 @@ def test_chk002_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            state_machine_checker.mandatory_target_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -95,6 +115,13 @@ def test_chk002_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            state_machine_checker.mandatory_target_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_002.mandatory_target_state"
     )
@@ -117,6 +144,13 @@ def test_chk003_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            state_machine_checker.no_target_state_for_completed_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -144,6 +178,13 @@ def test_chk003_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(
+            state_machine_checker.no_target_state_for_completed_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_003.no_target_state_for_completed_state"
     )
@@ -166,6 +207,11 @@ def test_chk004_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(state_machine_checker.mandatory_trigger.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -193,6 +239,11 @@ def test_chk004_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(state_machine_checker.mandatory_trigger.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_004.mandatory_trigger"
     )
@@ -215,6 +266,11 @@ def test_chk005_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(state_machine_checker.mandatory_transition.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -242,6 +298,11 @@ def test_chk005_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(state_machine_checker.mandatory_transition.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_005.mandatory_transition"
     )
@@ -264,6 +325,13 @@ def test_chk006_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            state_machine_checker.distinguished_initial_and_completed_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -292,6 +360,13 @@ def test_chk006_positive_no_completed(
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
     assert (
+        result.get_checker_status(
+            state_machine_checker.distinguished_initial_and_completed_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
+
+    assert (
         len(
             result.get_issues_by_rule_uid(
                 "asam.net:otx:1.0.0:state_machine.chk_006.distinguished_initial_and_completed_state"
@@ -316,6 +391,13 @@ def test_chk006_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(
+            state_machine_checker.distinguished_initial_and_completed_state.CHECKER_ID
+        )
+        == StatusType.COMPLETED
+    )
 
     state_machine_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:state_machine.chk_006.distinguished_initial_and_completed_state"

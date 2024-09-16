@@ -1,18 +1,19 @@
-import logging, os, re
-
-from typing import List
+import logging, os
 
 from lxml import etree
 
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import IssueSeverity, StatusType
 
 from qc_otx import constants
 from qc_otx.checks import models, utils
 
-from qc_otx.checks.core_checker import core_constants
 
-
-RULE_SEVERITY = IssueSeverity.ERROR
+CHECKER_ID = "check_asam_otx_core_chk_006_match_of_imported_document_data_model_version"
+CHECKER_DESCRIPTION = "An imported OTX document (imported by an <import> element) shall be bound to the same data model version as the importing document."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = (
+    "asam.net:otx:1.0.0:core.chk_006.match_of_imported_document_data_model_version"
+)
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -28,15 +29,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing match_of_imported_document_data_model_version check")
 
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_006.match_of_imported_document_data_model_version",
-    )
-
     input_file_path = checker_data.config.get_config_param("InputFile")
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
@@ -46,13 +38,28 @@ def check_rule(checker_data: models.CheckerData) -> None:
         logging.error(
             "xmlns version not found in current document root. Skipping check.."
         )
+
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
         return
+
     logging.debug(f"source_data_model_version: {source_data_model_version}")
 
     import_nodes = root.findall(".//import", namespaces=root.nsmap)
 
     if import_nodes is None:
         logging.error("No import nodes found. Skipping check..")
+
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
         return
 
     # Store previous working directory and move to config path dir for relative package paths
@@ -83,15 +90,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
         if has_issue:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 description="Issue flagging when data model version of imported document is different than the one in current document",
-                level=RULE_SEVERITY,
-                rule_uid=rule_uid,
+                level=IssueSeverity.ERROR,
+                rule_uid=RULE_UID,
             )
 
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 issue_id=issue_id,
                 xpath=current_xpath,
                 description=f"Imported document {current_document} data model version {current_data_model_version} different than current model version {source_data_model_version}",

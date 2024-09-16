@@ -1,17 +1,17 @@
 import logging
 
-from dataclasses import dataclass
-from typing import List
 
-from lxml import etree
-
-from qc_baselib import Configuration, Result, IssueSeverity
+from qc_baselib import IssueSeverity, StatusType
 
 from qc_otx import constants
-from qc_otx.checks import utils, models
+from qc_otx.checks import models
 
-from qc_otx.checks.core_checker import core_constants
 from pathlib import Path
+
+CHECKER_ID = "check_asam_otx_core_chk_001_document_name_matches_filename"
+CHECKER_DESCRIPTION = "For OTX documents stored in a file system, the attribute name of the <otx> root element should match the filename of the containing file (without the extension '.otx')."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_001.document_name_matches_filename"
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -26,20 +26,18 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing document_name_matches_filename check")
 
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_001.document_name_matches_filename",
-    )
-
     root = checker_data.input_file_xml_root
     root_attrib = root.getroot().attrib
 
     if "name" not in root_attrib:
         logging.error("No name attribute find in otx root node. Abort...")
+
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
         return
 
     document_name = root_attrib["name"]
@@ -52,15 +50,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
         issue_id = checker_data.result.register_issue(
             checker_bundle_name=constants.BUNDLE_NAME,
-            checker_id=core_constants.CHECKER_ID,
+            checker_id=CHECKER_ID,
             description="Issue flagging when document name does not match file name",
             level=IssueSeverity.WARNING,
-            rule_uid=rule_uid,
+            rule_uid=RULE_UID,
         )
 
         checker_data.result.add_xml_location(
             checker_bundle_name=constants.BUNDLE_NAME,
-            checker_id=core_constants.CHECKER_ID,
+            checker_id=CHECKER_ID,
             issue_id=issue_id,
             xpath="/otx",
             description=f"Invalid otx name {document_name} detected. Do not match filename {filename}",

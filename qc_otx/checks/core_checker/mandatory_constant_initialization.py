@@ -1,15 +1,14 @@
-import logging, os
+import logging
 
-from typing import List
-
-from lxml import etree
-
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import IssueSeverity
 
 from qc_otx import constants
 from qc_otx.checks import models
 
-from qc_otx.checks.core_checker import core_constants
+CHECKER_ID = "check_asam_otx_core_chk_009_mandatory_constant_initialization"
+CHECKER_DESCRIPTION = "Constant declarations shall always be initialized."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_009.mandatory_constant_initialization"
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -20,19 +19,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing mandatory_constant_initialization check")
 
-    issue_severity = IssueSeverity.ERROR
-
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_009.mandatory_constant_initialization",
-    )
-
     tree = checker_data.input_file_xml_root
-    root = tree.getroot()
     # Use XPath to find all nodes constant
     constant_nodes = tree.xpath("//constant")
 
@@ -49,15 +36,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
             current_xpath = tree.getpath(constant_node)
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 description="Issue flagging when a constant is not initialized",
-                level=issue_severity,
-                rule_uid=rule_uid,
+                level=IssueSeverity.ERROR,
+                rule_uid=RULE_UID,
             )
 
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 issue_id=issue_id,
                 xpath=current_xpath,
                 description=f"Constant {constant_name} at {current_xpath} is not initialized",

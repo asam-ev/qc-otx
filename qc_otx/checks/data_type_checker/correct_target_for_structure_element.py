@@ -5,7 +5,11 @@ from qc_baselib import IssueSeverity
 from qc_otx import constants
 from qc_otx.checks import models
 
-from qc_otx.checks.data_type_checker import data_type_constants
+
+CHECKER_ID = "check_asam_otx_data_type_chk_008_correct_target_for_structure_element"
+CHECKER_DESCRIPTION = "When referring to a structure element, an existing <element> name of the referenced StructureSignature shall be used."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:data_type.chk_008.correct_target_for_structure_element"
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -23,22 +27,9 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing correct_target_for_structure_element check")
 
-    issue_severity = IssueSeverity.ERROR
-
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=data_type_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="data_type.chk_008.correct_target_for_structure_element",
-    )
-
     tree = checker_data.input_file_xml_root
-    root = tree.getroot()
 
     # Use XPath to find all nodes procedure
-    declaration_nodes = tree.xpath("//declaration")
     signature_nodes = tree.xpath("//signature")
 
     signature_dict = dict()
@@ -88,15 +79,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
                     current_xpath = tree.getpath(structure_instance)
                     issue_id = checker_data.result.register_issue(
                         checker_bundle_name=constants.BUNDLE_NAME,
-                        checker_id=data_type_constants.CHECKER_ID,
+                        checker_id=CHECKER_ID,
                         description="Issue flagging when invalid names is used in accessing structure element",
-                        level=issue_severity,
-                        rule_uid=rule_uid,
+                        level=IssueSeverity.ERROR,
+                        rule_uid=RULE_UID,
                     )
 
                     checker_data.result.add_xml_location(
                         checker_bundle_name=constants.BUNDLE_NAME,
-                        checker_id=data_type_constants.CHECKER_ID,
+                        checker_id=CHECKER_ID,
                         issue_id=issue_id,
                         xpath=current_xpath,
                         description=f"Accessing {current_value} for variable {structure_name} of type {current_variable_type} is not present in type definition",

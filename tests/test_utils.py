@@ -1,7 +1,6 @@
 import os
 import sys
 import pytest
-from typing import List
 import qc_otx.main as main
 from qc_otx import constants, checks
 from qc_baselib import Configuration, Result
