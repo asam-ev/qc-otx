@@ -35,14 +35,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
     source_data_model_version = utils.get_data_model_version(root)
     if source_data_model_version is None:
-        logging.error(
-            "xmlns version not found in current document root. Skipping check.."
-        )
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"xmlns version not found in current document root. Skip the check.",
         )
 
         return
@@ -52,12 +54,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
     import_nodes = root.findall(".//import", namespaces=root.nsmap)
 
     if import_nodes is None:
-        logging.error("No import nodes found. Skipping check..")
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"No import nodes found. Skip the check.",
         )
 
         return

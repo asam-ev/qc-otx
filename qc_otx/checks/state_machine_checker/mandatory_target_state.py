@@ -31,14 +31,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
     nsmap = utils.get_namespace_map(tree)
 
     if "smp" not in nsmap:
-        logging.error(
-            'No state machine procedure prefix "smp" found in document namespaces. Abort state machine procedure checks...'
-        )
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"No state machine procedure prefix 'smp' found in document namespaces. Skip the check.",
         )
 
         return
@@ -46,11 +48,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
     state_machine_procedures = utils.get_state_machine_procedures(tree, nsmap)
 
     if state_machine_procedures is None:
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"State machine procedures not found. Skip the check.",
         )
 
         return
@@ -63,13 +70,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         state_machine = utils.get_state_machine(state_machine_procedure, nsmap)
 
         if state_machine is None:
-            checker_data.result.set_checker_status(
-                checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=CHECKER_ID,
-                status=StatusType.SKIPPED,
-            )
-
-            return
+            continue
 
         for sm_state in state_machine.states:
             has_issue = (
