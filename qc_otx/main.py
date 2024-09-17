@@ -122,6 +122,8 @@ def execute_checker(
             constants.BUNDLE_NAME, checker.CHECKER_ID, f"Error: {str(e)}."
         )
 
+        logging.exception(f"An error occurred in {checker.CHECKER_ID}.")
+
 
 def run_checks(config: Configuration, result: Result) -> None:
     root = etree.parse(config.get_config_param("InputFile"))
