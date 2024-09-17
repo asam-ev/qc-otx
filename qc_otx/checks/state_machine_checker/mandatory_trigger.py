@@ -72,20 +72,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         state_machine = utils.get_state_machine(state_machine_procedure, nsmap)
 
         if state_machine is None:
-
-            checker_data.result.set_checker_status(
-                checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=CHECKER_ID,
-                status=StatusType.SKIPPED,
-            )
-
-            checker_data.result.add_checker_summary(
-                constants.BUNDLE_NAME,
-                CHECKER_ID,
-                f"State machine not found. Skip the check.",
-            )
-
-            return
+            continue
 
         for sm_state in state_machine.states:
             has_issue = not sm_state.is_completed and len(sm_state.triggers) == 0
