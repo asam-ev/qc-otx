@@ -45,6 +45,12 @@ def check_rule(checker_data: models.CheckerData) -> None:
             status=StatusType.SKIPPED,
         )
 
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"No state machine procedure prefix 'smp' found in document namespaces. Skip the check.",
+        )
+
         return
 
     state_machine_procedures = utils.get_state_machine_procedures(tree, nsmap)
@@ -54,6 +60,12 @@ def check_rule(checker_data: models.CheckerData) -> None:
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"State machine procedures not found. Skip the check.",
         )
 
         return
@@ -72,6 +84,12 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 status=StatusType.SKIPPED,
             )
 
+            checker_data.result.add_checker_summary(
+                constants.BUNDLE_NAME,
+                CHECKER_ID,
+                f"State machine not found. Skip the check.",
+            )
+
             return
 
         smp_realisation = state_machine_procedure.xpath(
@@ -80,15 +98,18 @@ def check_rule(checker_data: models.CheckerData) -> None:
         logging.debug(f"smp_realisation: {smp_realisation}")
 
         if smp_realisation is None or len(smp_realisation) != 1:
-            logging.error(
-                f"Invalid realisation found in current state machine procedure"
-            )
-
             checker_data.result.set_checker_status(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=CHECKER_ID,
                 status=StatusType.SKIPPED,
             )
+
+            checker_data.result.add_checker_summary(
+                constants.BUNDLE_NAME,
+                CHECKER_ID,
+                f"Invalid realisation found in state machine procedure. Skip the check.",
+            )
+
             return
 
         smp_realisation = smp_realisation[0]

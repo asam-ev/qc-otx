@@ -30,12 +30,16 @@ def check_rule(checker_data: models.CheckerData) -> None:
     root_attrib = root.getroot().attrib
 
     if "name" not in root_attrib:
-        logging.error("No name attribute find in otx root node. Abort...")
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            "No name attribute in otx root node. Skip the check.",
         )
 
         return
