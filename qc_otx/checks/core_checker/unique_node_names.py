@@ -64,7 +64,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=CHECKER_ID,
-                description="Issue flagging when nodes with same attribute name are found in a procedure",
+                description="Nodes with same attribute name found in a procedure",
                 level=IssueSeverity.WARNING,
                 rule_uid=RULE_UID,
             )

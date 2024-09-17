@@ -61,7 +61,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=CHECKER_ID,
-                description="Issue to check if empty realisation have content in specification",
+                description="Empty realisation has content in specification",
                 level=IssueSeverity.WARNING,
                 rule_uid=RULE_UID,
             )

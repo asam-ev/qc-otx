@@ -68,7 +68,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 checker_id=CHECKER_ID,
                 status=StatusType.SKIPPED,
             )
-            
+
             return
 
         for sm_state in state_machine.states:
@@ -80,7 +80,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 issue_id = checker_data.result.register_issue(
                     checker_bundle_name=constants.BUNDLE_NAME,
                     checker_id=CHECKER_ID,
-                    description="Issue flagging when a non completed state has no target state",
+                    description="Non-completed state has no target state",
                     level=IssueSeverity.ERROR,
                     rule_uid=RULE_UID,
                 )

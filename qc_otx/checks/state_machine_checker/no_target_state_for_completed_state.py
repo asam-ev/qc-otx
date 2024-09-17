@@ -94,7 +94,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
                 checker_id=CHECKER_ID,
-                description="Issue flagging when a completed state has a target state",
+                description="completed state has a target state",
                 level=IssueSeverity.WARNING,
                 rule_uid=RULE_UID,
             )
