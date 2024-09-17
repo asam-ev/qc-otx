@@ -80,7 +80,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 issue_id = checker_data.result.register_issue(
                     checker_bundle_name=constants.BUNDLE_NAME,
                     checker_id=CHECKER_ID,
-                    description="Issue flagging when the list in an ZipFile action does not contain type String",
+                    description="ZipFile action specifies a List not String typed",
                     level=IssueSeverity.ERROR,
                     rule_uid=RULE_UID,
                 )

@@ -139,7 +139,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         checker_data.result.register_issue(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
-            description="Issue flagging when otx name is reused in the same package",
+            description="<otx> attribute name re-used in the same package",
             level=IssueSeverity.ERROR,
             rule_uid=RULE_UID,
         )

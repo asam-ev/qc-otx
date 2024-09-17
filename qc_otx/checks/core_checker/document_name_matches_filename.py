@@ -51,7 +51,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
         issue_id = checker_data.result.register_issue(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
-            description="Issue flagging when document name does not match file name",
+            description="Document name not matching file name",
             level=IssueSeverity.WARNING,
             rule_uid=RULE_UID,
         )
