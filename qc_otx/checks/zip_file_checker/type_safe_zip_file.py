@@ -39,6 +39,12 @@ def check_rule(checker_data: models.CheckerData) -> None:
             status=StatusType.SKIPPED,
         )
 
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"xsi is not in nsmap or zip is not in nsmap. Skip the check.",
+        )
+
         return
 
     zip_nodes = tree.xpath("//*[@xsi:type='zip:ZipFile']", namespaces=nsmap)

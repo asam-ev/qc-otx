@@ -61,24 +61,32 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
     document_name = root.get("name")
     if document_name is None:
-        logging.error("No name attribute find in otx root node. Abort...")
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
         )
 
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            "No name attribute in otx root node. Skip the check.",
+        )
+
         return
 
     package_name = root.get("package")
     if package_name is None:
-        logging.error("No package attribute find in otx root node. Abort...")
-
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            "No package attribute in otx root node. Skip the check.",
         )
 
         return
@@ -110,15 +118,18 @@ def check_rule(checker_data: models.CheckerData) -> None:
     package_root = os.path.join(package_root, package_splits[0])
 
     if not os.path.exists(package_root):
-        logging.error(
-            f"Error in setting package root {package_root}. Folder not found. Abort..."
-        )
         os.chdir(previous_wd)
 
         checker_data.result.set_checker_status(
             checker_bundle_name=constants.BUNDLE_NAME,
             checker_id=CHECKER_ID,
             status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"The package root folder {package_root} does not exist. Skip the check.",
         )
 
         return
