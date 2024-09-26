@@ -1,17 +1,15 @@
-import logging, os
+import logging
 
-from typing import List
-
-from lxml import etree
-
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import IssueSeverity, StatusType
 
 from qc_otx import constants
 from qc_otx.checks import models, utils
 
-from qc_otx.checks.core_checker import core_constants
+CHECKER_ID = "check_asam_otx_core_chk_005_no_use_of_undefined_import_prefixes"
+CHECKER_DESCRIPTION = "If an imported name is accessed by prefix in an OtxLink type attribute, the corresponding prefix definition shall exist in an <import> element."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_005.no_use_of_undefined_import_prefixes"
 
-RULE_SEVERITY = IssueSeverity.ERROR
 
 OTX_LINK_ATTRIBUTES = set()
 OTX_LINK_ATTRIBUTES.add("implements")
@@ -31,22 +29,24 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing no_use_of_undefined_import_prefixes check")
 
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_005.no_use_of_undefined_import_prefixes",
-    )
-
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
 
     import_nodes = root.findall(".//import", namespaces=root.nsmap)
 
     if import_nodes is None:
-        logging.error("No import nodes found. Skipping check..")
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"No import nodes found. Skip the check.",
+        )
+
         return
 
     import_prefixes = [x.get("prefix") for x in import_nodes]
@@ -71,15 +71,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
         if has_issue:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
-                description="Issue flagging when prefix definition does not exists in an import element",
-                level=RULE_SEVERITY,
-                rule_uid=rule_uid,
+                checker_id=CHECKER_ID,
+                description="Prefix definition does not exists in an <import> element",
+                level=IssueSeverity.ERROR,
+                rule_uid=RULE_UID,
             )
 
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 issue_id=issue_id,
                 xpath=otx_link.xpath,
                 description=f"Imported prefix {current_prefix} not found across import elements",

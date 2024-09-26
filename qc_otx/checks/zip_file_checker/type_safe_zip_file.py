@@ -1,11 +1,15 @@
 import logging
 
-from qc_baselib import IssueSeverity
+from qc_baselib import IssueSeverity, StatusType
 
 from qc_otx import constants
 from qc_otx.checks import models
 
-from qc_otx.checks.zip_file_checker import zip_file_constants
+
+CHECKER_ID = "check_asam_otx_zip_file_chk_002_type_safe_zip_file"
+CHECKER_DESCRIPTION = "In a ZipFile action, the list described by ListTerm <extensions> shall have a data type of <String>."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:zip_file.chk_002.type_safe_zip_file"
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -24,23 +28,25 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing correct_target_for_structure_element check")
 
-    issue_severity = IssueSeverity.ERROR
-
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=zip_file_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="zip_file.chk_002.type_safe_zip_file",
-    )
-
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
     nsmap = {k: v for k, v in root.nsmap.items() if k is not None}
 
     if "xsi" not in nsmap or "zip" not in nsmap:
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"xsi is not in nsmap or zip is not in nsmap. Skip the check.",
+        )
+
         return
+
     zip_nodes = tree.xpath("//*[@xsi:type='zip:ZipFile']", namespaces=nsmap)
 
     logging.debug(f"zip_nodes {zip_nodes}")
@@ -79,15 +85,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
                 current_xpath = tree.getelementpath(current_list)
                 issue_id = checker_data.result.register_issue(
                     checker_bundle_name=constants.BUNDLE_NAME,
-                    checker_id=zip_file_constants.CHECKER_ID,
-                    description="Issue flagging when the list in an ZipFile action does not contain type String",
-                    level=issue_severity,
-                    rule_uid=rule_uid,
+                    checker_id=CHECKER_ID,
+                    description="ZipFile action specifies a List not String typed",
+                    level=IssueSeverity.ERROR,
+                    rule_uid=RULE_UID,
                 )
 
                 checker_data.result.add_xml_location(
                     checker_bundle_name=constants.BUNDLE_NAME,
-                    checker_id=zip_file_constants.CHECKER_ID,
+                    checker_id=CHECKER_ID,
                     issue_id=issue_id,
                     xpath=current_xpath,
                     description=f"Zip action does not contain any String type",

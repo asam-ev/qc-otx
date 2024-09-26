@@ -1,15 +1,16 @@
-import logging, os
+import logging
 
-from typing import List
 
-from lxml import etree
-
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import IssueSeverity
 
 from qc_otx import constants
 from qc_otx.checks import models
 
-from qc_otx.checks.core_checker import core_constants
+CHECKER_ID = "check_asam_otx_core_chk_007_have_specification_if_no_realisation_exists"
+CHECKER_DESCRIPTION = "For all elements with specification and realisation parts in an OTX document: if there is no <realisation> given, the according <specification> element should exist and have content (no empty string)."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_007.have_specification_if_no_realisation_exists"
+
 
 NODES_WITH_SPECIFICATION_AND_REALISATION = [
     "declaration",
@@ -28,17 +29,6 @@ def check_rule(checker_data: models.CheckerData) -> None:
     Severity: Warning
     """
     logging.info("Executing have_specification_if_no_realisation_exists check")
-
-    issue_severity = IssueSeverity.WARNING
-
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_007.have_specification_if_no_realisation_exists",
-    )
 
     tree = checker_data.input_file_xml_root
     root = tree.getroot()
@@ -70,15 +60,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
         if not is_valid:
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
-                description="Issue to check if empty realisation have content in specification",
-                level=issue_severity,
-                rule_uid=rule_uid,
+                checker_id=CHECKER_ID,
+                description="Empty realisation has content in specification",
+                level=IssueSeverity.WARNING,
+                rule_uid=RULE_UID,
             )
 
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 issue_id=issue_id,
                 xpath=current_xpath,
                 description=f"Node {current_xpath} has no realisation and no specification or empty string in specification",

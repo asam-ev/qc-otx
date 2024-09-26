@@ -1,15 +1,14 @@
-import logging, os
+import logging
 
-from typing import List
-
-from lxml import etree
-
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import IssueSeverity
 
 from qc_otx import constants
 from qc_otx.checks import models
 
-from qc_otx.checks.core_checker import core_constants
+CHECKER_ID = "check_asam_otx_core_chk_010_unique_node_names"
+CHECKER_DESCRIPTION = "The value of a nodes name attribute should be unique among all nodes in a procedure."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_010.unique_node_names"
 
 
 def check_rule(checker_data: models.CheckerData) -> None:
@@ -30,19 +29,7 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing unique_node_names check")
 
-    issue_severity = IssueSeverity.WARNING
-
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_010.unique_node_names",
-    )
-
     tree = checker_data.input_file_xml_root
-    root = tree.getroot()
     # Use XPath to find all nodes procedure
     procedure_nodes = tree.xpath("//procedure")
 
@@ -76,15 +63,15 @@ def check_rule(checker_data: models.CheckerData) -> None:
 
             issue_id = checker_data.result.register_issue(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
-                description="Issue flagging when nodes with same attribute name are found in a procedure",
-                level=issue_severity,
-                rule_uid=rule_uid,
+                checker_id=CHECKER_ID,
+                description="Nodes with same attribute name found in a procedure",
+                level=IssueSeverity.WARNING,
+                rule_uid=RULE_UID,
             )
 
             checker_data.result.add_xml_location(
                 checker_bundle_name=constants.BUNDLE_NAME,
-                checker_id=core_constants.CHECKER_ID,
+                checker_id=CHECKER_ID,
                 issue_id=issue_id,
                 xpath=xpaths,
                 description=f"Procedure {procedure_name} contains duplicated name.",

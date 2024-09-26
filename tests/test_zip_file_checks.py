@@ -1,9 +1,8 @@
 import os
 import pytest
 import test_utils
-from qc_otx import constants
-from qc_otx.checks.core_checker import core_constants
-from qc_baselib import Result, IssueSeverity
+from qc_baselib import Result, IssueSeverity, StatusType
+from qc_otx.checks import zip_file_checker
 
 
 def test_chk001_positive(
@@ -19,6 +18,11 @@ def test_chk001_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(zip_file_checker.type_safe_unzip_file.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -46,6 +50,11 @@ def test_chk001_negative(
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
 
+    assert (
+        result.get_checker_status(zip_file_checker.type_safe_unzip_file.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
+
     zip_file_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:zip_file.chk_001.type_safe_unzip_file"
     )
@@ -68,6 +77,11 @@ def test_chk002_positive(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(zip_file_checker.type_safe_zip_file.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     assert (
         len(
@@ -94,6 +108,11 @@ def test_chk002_negative(
 
     result = Result()
     result.load_from_file(test_utils.REPORT_FILE_PATH)
+
+    assert (
+        result.get_checker_status(zip_file_checker.type_safe_zip_file.CHECKER_ID)
+        == StatusType.COMPLETED
+    )
 
     zip_file_issues = result.get_issues_by_rule_uid(
         "asam.net:otx:1.0.0:zip_file.chk_002.type_safe_zip_file"

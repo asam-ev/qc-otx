@@ -1,17 +1,19 @@
 import logging, os
 
-from dataclasses import dataclass
 from typing import List
 
 from lxml import etree
 
-from qc_baselib import Configuration, Result, IssueSeverity
+from qc_baselib import IssueSeverity, StatusType
 
 from qc_otx import constants
-from qc_otx.checks import utils, models
+from qc_otx.checks import models
 
-from qc_otx.checks.core_checker import core_constants
-from pathlib import Path
+
+CHECKER_ID = "check_asam_otx_core_chk_002_document_name_package_uniqueness"
+CHECKER_DESCRIPTION = "The value of the <otx> attribute name shall be unique within the scope of all OTX documents belonging to the same package."
+CHECKER_PRECONDITIONS = set()
+RULE_UID = "asam.net:otx:1.0.0:core.chk_002.document_name_package_uniqueness"
 
 
 def find_otx_files(directory: str) -> List:
@@ -55,25 +57,38 @@ def check_rule(checker_data: models.CheckerData) -> None:
     """
     logging.info("Executing document_name_package_uniqueness check")
 
-    rule_uid = checker_data.result.register_rule(
-        checker_bundle_name=constants.BUNDLE_NAME,
-        checker_id=core_constants.CHECKER_ID,
-        emanating_entity="asam.net",
-        standard="otx",
-        definition_setting="1.0.0",
-        rule_full_name="core.chk_002.document_name_package_uniqueness",
-    )
-
     root = checker_data.input_file_xml_root.getroot()
 
     document_name = root.get("name")
     if document_name is None:
-        logging.error("No name attribute find in otx root node. Abort...")
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            "No name attribute in otx root node. Skip the check.",
+        )
+
         return
 
     package_name = root.get("package")
     if package_name is None:
-        logging.error("No package attribute find in otx root node. Abort...")
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            "No package attribute in otx root node. Skip the check.",
+        )
+
         return
 
     document_package_dot_name = package_name + "." + document_name
@@ -103,10 +118,20 @@ def check_rule(checker_data: models.CheckerData) -> None:
     package_root = os.path.join(package_root, package_splits[0])
 
     if not os.path.exists(package_root):
-        logging.error(
-            f"Error in setting package root {package_root}. Folder not found. Abort..."
-        )
         os.chdir(previous_wd)
+
+        checker_data.result.set_checker_status(
+            checker_bundle_name=constants.BUNDLE_NAME,
+            checker_id=CHECKER_ID,
+            status=StatusType.SKIPPED,
+        )
+
+        checker_data.result.add_checker_summary(
+            constants.BUNDLE_NAME,
+            CHECKER_ID,
+            f"The package root folder {package_root} does not exist. Skip the check.",
+        )
+
         return
     # Collect all otx file path from package root
     package_otx_files = find_otx_files(package_root)
@@ -124,10 +149,10 @@ def check_rule(checker_data: models.CheckerData) -> None:
     if not is_valid:
         checker_data.result.register_issue(
             checker_bundle_name=constants.BUNDLE_NAME,
-            checker_id=core_constants.CHECKER_ID,
-            description="Issue flagging when otx name is reused in the same package",
+            checker_id=CHECKER_ID,
+            description="<otx> attribute name re-used in the same package",
             level=IssueSeverity.ERROR,
-            rule_uid=rule_uid,
+            rule_uid=RULE_UID,
         )
 
     os.chdir(previous_wd)
