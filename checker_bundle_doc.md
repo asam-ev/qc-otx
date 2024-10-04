@@ -1,11 +1,12 @@
 # Checker bundle: otxBundle
 
-* Build version:  0.1.0
+* Build version:  v1.0.0-rc.1
 * Description:    OTX checker bundle
 
 ## Parameters
 
 * InputFile 
+* resultFile 
 
 ## Checkers
 
