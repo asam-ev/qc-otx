@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from lxml import etree
-from typing import Union, List
+from typing import Union, List, Optional
 
 from qc_baselib import Configuration, Result
 
@@ -8,7 +8,7 @@ from qc_baselib import Configuration, Result
 @dataclass
 class QueueNode:
     element: etree._ElementTree
-    xpath: Union[str, None]
+    xpath: Optional[str]
 
 
 @dataclass
@@ -29,22 +29,22 @@ class CheckerData:
 @dataclass
 class SMTrigger:
     id: str
-    name: Union[str, None]
+    name: Optional[str]
     xml_element: etree._Element
 
 
 @dataclass
 class SMTransition:
     id: str
-    name: Union[str, None]
-    target: Union[str, None]
+    name: Optional[str]
+    target: Optional[str]
     xml_element: etree._Element
 
 
 @dataclass
 class SMState:
     id: str
-    name: Union[str, None]
+    name: Optional[str]
     is_initial: bool
     is_completed: bool
     transitions: List[SMTransition]
