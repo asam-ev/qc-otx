@@ -1,5 +1,5 @@
 from lxml import etree
-from typing import Union, List, Dict
+from typing import Optional, List, Dict
 from qc_otx.checks import models
 import re
 import logging
@@ -63,7 +63,7 @@ def get_all_attributes(
     return attributes
 
 
-def get_standard_schema_version(root: etree._ElementTree) -> Union[str, None]:
+def get_standard_schema_version(root: etree._ElementTree) -> Optional[str]:
     root_attrib = root.getroot().attrib
     return root_attrib["version"]
 
