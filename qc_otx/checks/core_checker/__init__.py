@@ -1,3 +1,9 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright 2024, ASAM e.V.
+# This Source Code Form is subject to the terms of the Mozilla
+# Public License, v. 2.0. If a copy of the MPL was not distributed
+# with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 from . import document_name_matches_filename as document_name_matches_filename
 from . import document_name_package_uniqueness as document_name_package_uniqueness
 from . import no_unused_imports as no_unused_imports
